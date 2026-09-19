@@ -1,49 +1,53 @@
 import time, math
-
+import locale
 
 cal_ID = 0
 
 class MonthlyCalendar:
-    def __init__(self, year = None, month = None):
+    def __init__(self, year = None, month = None, lang=None):
         self.tFontFace = 'Arial, Helvetica'
-        self.tFontSize = 12                
-        self.tFontColor = '#FFFFFF'         
-        self.tBGColor = '#304B90'          
+        self.tFontSize = 12
+        self.tFontColor = '#FFFFFF'
+        self.tBGColor = '#304B90'
 
-        self.hFontFace = 'Arial, Helvetica' 
-        self.hFontSize = 10                 
-        self.hFontColor = '#FFFFFF'        
-        self.hBGColor = '#304B90'          
+        self.hFontFace = 'Arial, Helvetica'
+        self.hFontSize = 10
+        self.hFontColor = '#FFFFFF'
+        self.hBGColor = '#304B90'
 
         self.dFontFace = 'Arial, Helvetica'
-        self.dFontSize = 12                 
-        self.dFontColor = '#000000'         
-        self.dBGColor = '#FFFFFF'           
+        self.dFontSize = 12
+        self.dFontColor = '#000000'
+        self.dBGColor = '#FFFFFF'
 
-        self.wFontFace = 'Arial, Helvetica' 
-        self.wFontSize = 10                 
-        self.wFontColor = '#FFFFFF'         
-        self.wBGColor = '#304B90'           
+        self.wFontFace = 'Arial, Helvetica'
+        self.wFontSize = 10
+        self.wFontColor = '#FFFFFF'
+        self.wBGColor = '#304B90'
 
-        self.saFontColor = '#0000D0'       
-        self.saBGColor = '#F6F6FF'          
+        self.saFontColor = '#0000D0'
+        self.saBGColor = '#F6F6FF'
 
-        self.suFontColor = '#D00000'        
-        self.suBGColor = '#FFF0F0'          
+        self.suFontColor = '#D00000'
+        self.suBGColor = '#FFF0F0'
 
-        self.tdBorderColor = 'red'      
+        self.tdBorderColor = 'red'
 
-        self.borderColor = '#304B90'        
-        self.hilightColor = '#FFFF00'       
+        self.borderColor = '#304B90'
+        self.hilightColor = '#FFFF00'
 
-        self.link = ''                      
-        self.offset = 1                    
-        self.weekNumbers = 0                
+        self.link = ''
+        self.offset = 0
+        self.weekNumbers = 0
 
-        self.weekdays = ('Sob', 'Nd', 'Pn', 'Wt', 'Sr', 'Czw', 'Pt')
+        setlang = self.set_lang(lang)
+        self.weekdays = setlang['weekdays']
+        self.months = setlang['months']
 
-        self.months = ('Styczen', 'Luty', 'Marzec', 'Kwiecien', 'Maj', 'Czerwiec',
-                       'Lipiec', 'Sierpien', 'Wrzesien', 'Pazdziernik', 'Listopad', 'Grudzien')
+        # self.weekdays = ('Sob', 'Nd', 'Pn', 'Wt', 'Sr', 'Czw', 'Pt')
+
+        # self.months = ('Styczen', 'Luty', 'Marzec', 'Kwiecien', 'Maj', 'Czerwiec',
+                       # 'Lipiec', 'Sierpien', 'Wrzesien', 'Pazdziernik', 'Listopad', 'Grudzien')
 
         self.error = ('Year must be 1 - 3999!', 'Month must be 1 - 12!')
 
@@ -58,6 +62,35 @@ class MonthlyCalendar:
 
     __size = 0
     __mDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    def set_lang(self, lang = None):
+
+        langs = {
+            "ru_RU": {
+                'weekdays': ('Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'),
+                'months': ('Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                           'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'),
+            },
+            "pl_PL": {
+                'weekdays': ('Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'),
+                'months': ('Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
+                           'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'),
+            },
+            "en_US": {
+                'weekdays': ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'),
+                'months': ('January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'),
+            },
+            "de_DE": {
+                'weekdays': ('Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'),
+                'months': ('Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'),
+            }
+        }
+
+        system_lang, encoding = locale.getdefaultlocale()
+        return langs[system_lang]
+
 
     def set_styles(self):
         globals()['cal_ID'] += 1
@@ -135,13 +168,13 @@ class MonthlyCalendar:
                 else:
                     link='brak'
                     style += 'cursor:pointer' + ';'
-                     
+
             if link=='brak':
                 html += ' onMouseOver="this.className=\'cssHilight' + str(globals()['cal_ID']) + '\'"'
                 html += ' onMouseOut="this.className=\'' + cls + '\'"'
                 html += ' onClick="document.location.href=\'' + '?date=' + date + '\'"'
-            
-            
+
+
             if link and link!='brak':
                 html += ' onMouseOver="this.className=\'cssHilight' + str(globals()['cal_ID']) + '\'"'
                 html += ' onMouseOut="this.className=\'' + cls + '\'"'
@@ -239,4 +272,8 @@ class MonthlyCalendar:
             html += '</table></td></tr></table>'
         return html
 
-    
+calendar = MonthlyCalendar()
+
+with open("test.html", 'w') as f:
+    f.write(calendar.create())
+    f.close()
