@@ -8,8 +8,8 @@
    # "python.testing.pytestEnabled": true
 #}
 
-from Src.Core.abstract import entity
-from Src.Core.exception import arguments_exception
+from Src.Core.entity_model import entity
+from Src.Core.exception import arguments_exception, max_length_exception
 import pytest
 
 class test_entity(entity):
@@ -41,8 +41,16 @@ def test_argument_exception_witn_empty_name():
     with pytest.raises(arguments_exception) as exception:
         entity.name = empty_name
 
-    assert "Wrong argument" in str(exception.value)
-    assert "Empty name" in str(exception.value)
+    assert "Wrong argument: name" == exception.value.message
+
+def test_max_length_exception_with_set_name():
+    """Тест ошибки на имя больше 50 символов"""
+    entity = test_entity()
+    new_name = "a"*51
+    with pytest.raises(max_length_exception) as exception:
+        entity.name = new_name
+
+    assert "Max length (50)" == exception.value.message
 
 def test_private_fields_not_visible():
     """__id, __name не доступны"""
