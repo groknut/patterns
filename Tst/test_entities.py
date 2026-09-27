@@ -9,7 +9,7 @@
 #}
 
 from Src.Core.entity_model import entity
-from Src.Core.exception import arguments_exception, max_length_exception
+from Src.Core.exception import arguments_exception, max_len_exception
 import pytest
 
 class test_entity(entity):
@@ -43,11 +43,11 @@ def test_argument_exception_witn_empty_name():
 
     assert "Wrong argument: name" == exception.value.message
 
-def test_max_length_exception_with_set_name():
+def test_max_len_exception_with_set_name():
     """Тест ошибки на имя больше 50 символов"""
     entity = test_entity()
     new_name = "a"*51
-    with pytest.raises(max_length_exception) as exception:
+    with pytest.raises(max_len_exception) as exception:
         entity.name = new_name
 
     assert "Max length (50)" == exception.value.message

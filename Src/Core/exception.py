@@ -48,15 +48,42 @@ class arguments_exception(base_exception):
         message = f"Wrong argument: {field}"
         super().__init__(field, message, stack_trace)
 
-class max_length_exception(base_exception):
+class max_len_exception(base_exception):
     """Исключение о превышении максимальной длины поля."""
 
     def __init__(
         self,
         field: str,
         max_length: int,
-        stack_trace: str = ""
+        stack_trace: str = "",
+        message:str=''
     ) -> None:
         """Инициализирует исключение."""
-        message = f"Max length ({max_length})"
+        if message == '': message = f"Max length ({max_length})"
+        super().__init__(field, message, stack_trace)
+
+class len_exception(base_exception):
+    """Исключение га корректную длину"""
+
+    def __init__(
+        self,
+        field: str,
+        length: int,
+        stack_trace: str = "",
+        message=""
+    ):
+        if message == "":
+            message = f"Wrong length for field: {field} ({length})"
+        super().__init__(field, message, stack_trace)
+
+class validation_exception(base_exception):
+    """Исключение о неудачной валидации значения"""
+    def __init__(
+        self,
+        field: str,
+        message: str = "",
+        stack_trace: str = ""
+    ) -> None:
+        if message == "":
+            message = f"Validation failed for field: {field}"
         super().__init__(field, message, stack_trace)

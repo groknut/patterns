@@ -1,5 +1,5 @@
 from Src.Core.abstract_model import abstract_model
-from Src.Core.exception import arguments_exception, max_length_exception
+from Src.Core.exception import arguments_exception, max_len_exception
 
 class entity(abstract_model):
     """Общий класс для наследования доменных моделей
@@ -25,9 +25,9 @@ class entity(abstract_model):
             )
 
         if len(value.strip()) > self.__max_length:
-            raise max_length_exception(
+            raise max_len_exception(
                 field="name",
-                max_length=50
+                max_length=self.__max_length
             )
         self.__name = value.strip()
 
