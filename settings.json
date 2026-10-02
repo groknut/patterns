@@ -1,16 +1,12 @@
 {
-    "database": {
-        "driver": "postgres",
-        "dsn": "${DATABASE_URL}"
-    }
-    "app": {
-        "name": "ООО Ромашка",
-        "host": "0.0.0.0",
-        "port": 8000
+    "organization": {
+        "name": "ООО «Ромашка»",
+        "inn": "7701234567",
+        "bic": "044525225",
+        "account": "40702810100000012345",
+        "owner": "Иванов Иван Иванович"
     },
-    "restaurants": {
-        "count": 10,
-        "work_from": "10:00",
-        "work_to": "22:00"
-    }
+    "boss_name": "Иванов Иван Иванович",
+    "account_name": "Петров Пётр Петрович",
+    "is_first_work": true
 }
