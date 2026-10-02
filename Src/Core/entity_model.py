@@ -1,7 +1,7 @@
 from Src.Core.abstract_model import abstract_model
-from Src.Core.exception import arguments_exception, max_len_exception
+from Src.Core.validator import validator
 
-class entity(abstract_model):
+class entity_model(abstract_model):
     """Общий класс для наследования доменных моделей
     Содержит определения:
         - уникальный код
@@ -19,16 +19,7 @@ class entity(abstract_model):
     @name.setter
     def name(self, value: str) -> None:
         """Установка наименования сущности"""
-        if value == '' or value is None or not isinstance(value, str):
-            raise arguments_exception(
-                field="name"
-            )
-
-        if len(value.strip()) > self.__max_length:
-            raise max_len_exception(
-                field="name",
-                max_length=self.__max_length
-            )
+        validator.validate(value, str, self.__max_length)
         self.__name = value.strip()
 
     @property

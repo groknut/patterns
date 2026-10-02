@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import uuid
-from Src.Core.exception import arguments_exception
+from Src.Core.validator import argument_exception
 
 class abstract_model(ABC):
     """Абстрактный класс доменных моделей
@@ -10,16 +10,22 @@ class abstract_model(ABC):
     def __init__(self) -> None:
         """Конструктор для инициализации. Генерирует id"""
         self.__id = uuid.uuid4().hex
+
     @property
-    def id(self):
-        """Get метод для получения значения __id формата property: Entity.id"""
+    def id(self)->str:
+        """Возвращает уникальный код модели"""
         return self.__id
 
     @id.setter
-    def id(self, v: str) -> None:
-        if value is None:
-            raise arguments_exception(
-                field=value,
-                message="Empty id"
+    def id(self, value: str) -> None:
+        """Устанавливает уникальный код модели"""
+        if value.strip() == "":
+            raise argument_exception(
+                "value", "Некорректно передан параметр"
             )
-        self.__id = value
+        self.__id = value.strip()
+
+    def __eq__(self, value) -> bool:
+        if value is None: return False
+        if not isinstance(value, abstract_model): return False
+        return self.id == value.id
