@@ -1,7 +1,7 @@
-from Src.Core.entity_model import entity
-from Src.Core.exception import arguments_exception
+from Src.Core.entity_model import entity_model
+from Src.Core.validator import argument_exception, validator
 
-class range_model(entity):
+class range_model(entity_model):
     """Модель единицы измерения
     Содержит:
         - базовая единица измерения
@@ -36,10 +36,7 @@ class range_model(entity):
         value: "range_model"
     ) -> None:
         """Устанавливает базовую единицу измерения"""
-        if value is None or not isinstance(value, range_model):
-            raise arguments_exception(
-                field="base"
-            )
+        validator.validate(value, range_model)
         self.__base = value
 
     @property
@@ -50,14 +47,7 @@ class range_model(entity):
     @coef.setter
     def coef(self, value: float) -> None:
         """Устанваливает коэффициент пересчета"""
-        if value is None or isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise arguments_exception(
-                field="coef",
-                message="Wrong argument: (int, float)"
-            )
+        validator.validate(value, int | float)
         if value <= 0:
-            raise arguments_exception(
-                field="coef",
-                message="coef > 0!"
-            )
+            raise argument_exception("coef > 0!")
         self.__coef = float(value)
