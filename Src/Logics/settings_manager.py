@@ -49,7 +49,7 @@ class settings_manager(abstract_manager):
 			self.__settings.is_first     = self.__data.get("is_first", False)
 
 			return True
-		except (KeyError, TypeError, ValueError) as e:
+		except (KeyError, TypeError, ValueError, AttributeError) as e:
 			import traceback
 			traceback.print_exc()
 			print(f"[warn] Ошибка конвертации: {e}")

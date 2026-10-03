@@ -38,3 +38,9 @@ def test_equals_settings_from_settings_managers():
     instance_2 = settings_manager()
 
     assert instance_1.settings == instance_2.settings
+
+def test_convert_invalid_data_returns_false():
+    """convert() с битым __data возвращает False, а не падает."""
+    manager = settings_manager()
+    manager._settings_manager__data = {"organization": "not_a_dict"}
+    assert manager.convert() is False

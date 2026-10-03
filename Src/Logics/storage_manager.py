@@ -10,17 +10,6 @@ from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.group_model import group_model
 from Src.Models.storage_model import storage_model
 
-"""
-storage manager - хранлищие хэш
-хранит все ед измерения
-группы клады номенклатуры
-на взод сеттипг в случае первый старт, формирует базовый набор
-флаг старта получается из сетиинг с json
-
-инкапуслировать от settings_manager, наследовать от abstract_manager
-без реализации -> тесты -> реализация
-"""
-
 class storage_manager(abstract_manager):
 	"""
 	Менеджер хранения доменных моделей
@@ -185,19 +174,3 @@ class storage_manager(abstract_manager):
 	def is_initialized(self) -> bool:
 		"""Флаг завершения инициализации."""
 		return self.__is_initialized
-
-	"""
-	мука масло номенклатуры
-	склад
-	мг/г/кг
-	"""
-
-"""
-- реализация storage_manager
-- нарисовать UML-диаграммы (storage_manager и settings_manager)
-- написать тесты для обоих менеджеров
-
-
-ед.изм - граммы - базовая единица для кг
-номенклатура: мука (кг)
-"""
