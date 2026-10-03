@@ -61,7 +61,7 @@ class company_model(entity_model):
 
     @corr_account.setter
     def corr_account(self, value:int):
-        validator.validate(value, int, 11)
+        validator.validate(value, int, 20)
         self.__corr_account = value
 
     # Банковский счет
@@ -71,7 +71,7 @@ class company_model(entity_model):
 
     @account.setter
     def account(self, value:int):
-        validator.validate(value, int, 11)
+        validator.validate(value, int, 20)
         self.__account = value
 
     # Вид собственности

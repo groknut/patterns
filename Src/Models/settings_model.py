@@ -14,7 +14,7 @@ class settings_model(abstract_model):
 
     @organization.setter
     def organization(self, value: company_model):
-        validator(value, company_model)
+        validator.validate(value, company_model)
         self.__organization = value
 
     @property
@@ -23,7 +23,7 @@ class settings_model(abstract_model):
 
     @boss_name.setter
     def boss_name(self, value: str):
-        validator(value, str, 255)
+        validator.validate(value, str, 255)
         self.__boss_name = value
 
     @property
@@ -32,13 +32,13 @@ class settings_model(abstract_model):
 
     @boss_name.setter
     def account_name(self, value: str):
-        validator(value, str, 255)
+        validator.validate(value, str, 255)
         self.__account_name = value
 
     @property
-    def is_first_work(self) -> bool:
+    def is_first(self) -> bool:
         return self.__is_first_work
 
-    @is_first_work.setter
-    def is_first_work(self, value: bool):
+    @is_first.setter
+    def is_first(self, value: bool):
         self.__is_first_work = value

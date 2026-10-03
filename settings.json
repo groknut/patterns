@@ -1,12 +1,12 @@
 {
     "organization": {
         "name": "ООО «Ромашка»",
-        "inn": "7701234567",
+        "inn": "770123456711",
         "bic": "044525225",
         "account": "40702810100000012345",
-        "owner": "Иванов Иван Иванович"
+        "ownership": "ООО"
     },
     "boss_name": "Иванов Иван Иванович",
     "account_name": "Петров Пётр Петрович",
-    "is_first_work": true
+    "is_first": true
 }
