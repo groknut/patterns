@@ -31,22 +31,32 @@ class settings_manager(abstract_manager):
 		except (TypeError, ValueError):
 			return default
 
+	def _require(self, data: dict, key: str):
+		"""Достать обязательный ключ или бросить KeyError с понятным текстом."""
+		if not isinstance(data, dict):
+			raise TypeError(f"Ожидался объект, получено {type(data).__name__}")
+		if key not in data:
+			raise KeyError(f"Обязательный ключ '{key}' отсутствует в файле настроек")
+		return data[key]
+
 	def convert(self) -> bool:
 		try:
 			self.__settings = settings_model()
-			org_data = self.__data.get("organization", {}) or {}
+			org_data = self._require(self.__data, "organization")
+			if not isinstance(org_data, dict):
+				raise TypeError("Секция 'organization' должна быть объектом")
 
 			self.__settings.organization = company_model(
-				name=org_data.get("name", ""),
-				inn=self._to_int(org_data.get("inn")),
-				bic=self._to_int(org_data.get("bic")),
-				account=self._to_int(org_data.get("account")),
-				ownership=org_data.get("ownership", ""),
+				name       = self._require(org_data, "name"),
+				inn        = self._to_int(self._require(org_data, "inn")),
+				bic        = self._to_int(self._require(org_data, "bic")),
+				account    = self._to_int(self._require(org_data, "account")),
+				ownership  = self._require(org_data, "ownership"),
 			)
 
-			self.__settings.boss_name    = self.__data.get("boss_name", "")
-			self.__settings.account_name = self.__data.get("account_name", "")
-			self.__settings.is_first     = self.__data.get("is_first", False)
+			self.__settings.boss_name    = self._require(self.__data, "boss_name")
+			self.__settings.account_name = self._require(self.__data, "account_name")
+			self.__settings.is_first     = bool(self.__data.get("is_first", False))
 
 			return True
 		except (KeyError, TypeError, ValueError, AttributeError) as e:
