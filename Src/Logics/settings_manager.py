@@ -47,11 +47,17 @@ class settings_manager(abstract_manager):
 				raise TypeError("Секция 'organization' должна быть объектом")
 
 			self.__settings.organization = company_model(
-				name       = self._require(org_data, "name"),
-				inn        = self._to_int(self._require(org_data, "inn")),
-				bic        = self._to_int(self._require(org_data, "bic")),
-				account    = self._to_int(self._require(org_data, "account")),
-				ownership  = self._require(org_data, "ownership"),
+				# name       = self._require(org_data, "name"),
+				# inn        = self._to_int(self._require(org_data, "inn")),
+				# bic        = self._to_int(self._require(org_data, "bic")),
+				# account    = self._to_int(self._require(org_data, "account")),
+				# ownership  = self._require(org_data, "ownership"),
+				name       = org_data.get("name", "")
+				inn        = self._to_int(org_data.get("inn", "")),
+				bic        = self._to_int(org_data.get("bic", "")),
+				account    = self._to_int(org_data.get("account", "")),
+				ownership  = org_data.get("ownership", ""),
+
 			)
 
 			self.__settings.boss_name    = self._require(self.__data, "boss_name")
