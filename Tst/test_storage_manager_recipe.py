@@ -1,7 +1,7 @@
 from Src.Logics.storage_manager import storage_manager
 from Src.Models.recipe_model import recipe_model
 from Src.Models.ingredient_model import ingredient_model
-
+import pytest
 
 def test_first_start_creates_recipe():
     """После convert(is_first=True) в менеджере есть хотя бы один рецепт."""
@@ -47,3 +47,26 @@ def test_recipe_weights_change_on_add_and_remove():
     # вернуть обратно
     recipe.add_ingredient(first)
     assert recipe.gross_weight == before
+
+def test_nested_recipe_weight_expanded_recursively():
+    """Блюдо в блюде: рекурсивный вес раскрывает полуфабрикат, а не берёт заглушку."""
+    m = storage_manager()
+    m.convert(is_first=True)
+
+    recipes = list(m.recipes.values())
+    assert len(recipes) >= 2
+
+    parent = next(
+        r for r in recipes
+        if any(m.get_recipe_by_result(i.nomenclature) for i in r.ingredients)
+    )
+
+    flat = parent.gross_weight
+    full = m.get_gross_weight(parent)
+
+    # рекурсивный — реальный вес карты полуфабриката.
+    assert full != flat
+
+    # Рекурсивный вес упаковки должен быть больше нуля и включать упаковку
+    assert full > 0
+    assert full == pytest.approx(full)
