@@ -109,9 +109,6 @@ class recipe_model(entity_model):
     @staticmethod
     def create_pancakes_recipe(nomenclatures: dict) -> "recipe_model":
         """Фабричный метод: «Оладьи пышные на кефире» на 1 порцию.
-
-        :param nomenclatures: Словарь номенклатуры {id: nomenclature_model}.
-        :raises argument_exception: Если в словаре нет нужной номенклатуры.
         """
         by_name = {n.name: n for n in nomenclatures.values()}
 
@@ -157,5 +154,43 @@ class recipe_model(entity_model):
                 ing("Масло топлёное", 0.01, loss_ratio=0.15),  # 10 г
                 ing("Сахарная пудра", 0.01),  # 10 г
                 ing("Сода пищевая", 0.001),  # 1 г
+            ],
+        )
+
+    @staticmethod
+    def create_packed_pancakes_recipe(nomenclatures: dict) -> "recipe_model":
+        """Фабричный метод: упаковка оладий пышных."""
+        by_name = {n.name: n for n in nomenclatures.values()}
+
+        def find(name: str) -> nomenclature_model:
+            nom = by_name.get(name)
+            if nom is None:
+                raise argument_exception(f"Нет номенклатуры «{name}»")
+            return nom
+
+        def ing(
+            name, quantity, loss_ratio=0.0, grams_per_unit=None
+        ) -> ingredient_model:
+            nom = find(name)
+            return ingredient_model(
+                nomenclature=nom,
+                range_=nom.range,
+                quantity=quantity,
+                loss_ratio=loss_ratio,
+                grams_per_unit=grams_per_unit,
+            )
+
+        return recipe_model(
+            name="Упаковка оладий пышных",
+            result=find("Упаковка оладий"),
+            output_quantity=1,
+            cooking_time_minutes=5,
+            steps=[
+                "Оладьи остудить до комнатной температуры.",
+                "Уложить в лоток и упаковать в пищевую плёнку.",
+            ],
+            ingredients=[
+                ing("Порция оладий пышных на кефире", 1, grams_per_unit=204.0),
+                ing("Плёнка пищевая", 1, grams_per_unit=5.0),
             ],
         )

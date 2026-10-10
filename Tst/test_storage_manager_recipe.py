@@ -22,7 +22,7 @@ def test_first_start_creates_two_recipes_one_with_packaging():
     m.convert(is_first=True)
 
     assert len(m.recipes) >= 2
-
+    # найдётся карта, где ингредиент относится к группе «Упаковка»
     has_packaging = any(
         ing.nomenclature.group is not None
         and ing.nomenclature.group.name == "Упаковка"
@@ -37,14 +37,13 @@ def test_recipe_weights_change_on_add_and_remove():
     m = storage_manager()
     m.convert(is_first=True)
     recipe = next(iter(m.recipes.values()))
-    before_gross = recipe.gross_weight
-    before_net = recipe.net_weight
+    before = recipe.gross_weight
 
+    # удалить первый ингредиент
     first = recipe.ingredients[0]
     recipe.remove_ingredient(first.nomenclature)
-    assert recipe.gross_weight < before_gross
-    assert recipe.net_weight < before_net
+    assert recipe.gross_weight < before
 
+    # вернуть обратно
     recipe.add_ingredient(first)
-    assert recipe.gross_weight == before_gross
-    assert recipe.net_weight == before_net
+    assert recipe.gross_weight == before

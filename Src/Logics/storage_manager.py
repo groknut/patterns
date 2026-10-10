@@ -32,12 +32,12 @@ class storage_manager(abstract_manager):
         return cls.instance
 
     def convert(self, is_first: bool) -> bool:
+        if not is_first:
+            return True
         if self.__is_initialized:
             return True
         try:
-            if is_first:
-                self.__initialize_primary_data()
-            self.__is_initialized = True
+            self.__initialize_primary_data()
             return True
         except argument_exception:
             return False
@@ -50,10 +50,10 @@ class storage_manager(abstract_manager):
         self.__create_recipes()
         self.__is_initialized = True
 
-    # ------------------------------------------------------------------
-    # Единицы измерения — через фабрики range_model
-    # ------------------------------------------------------------------
     def __create_ranges(self) -> None:
+        """
+        Единицы измерения — через фабрики range_model
+        """
         for rng in (
             range_model.create_gramm(),
             range_model.create_kilogram(),
@@ -63,10 +63,10 @@ class storage_manager(abstract_manager):
         ):
             self.add_object(range_model, self.__ranges, rng)
 
-    # ------------------------------------------------------------------
-    # Группы — через фабрики group_model
-    # ------------------------------------------------------------------
     def __create_groups(self) -> None:
+        """
+        Группы — через фабрики group_model
+        """
         for grp in (
             group_model.create_grocery(),
             group_model.create_dairy(),
@@ -75,16 +75,17 @@ class storage_manager(abstract_manager):
         ):
             self.add_object(group_model, self.__groups, grp)
 
-    # ------------------------------------------------------------------
-    # Номенклатура — через фабрики nomenclature_model
-    # ------------------------------------------------------------------
     def __create_nomenclatures(self) -> None:
+        """
+        Номенклатура — через фабрики nomenclature_model
+        """
         groups = {g.name: g for g in self.__groups.values()}
         ranges = {r.name: r for r in self.__ranges.values()}
 
         grocery = groups.get("Бакалея")
         dairy = groups.get("Молочные продукты")
         dishes = groups.get("Блюда")
+        packaging = groups.get("Упаковка")
 
         kg = ranges.get("килограмм")
         ml = ranges.get("миллилитр")
@@ -110,28 +111,33 @@ class storage_manager(abstract_manager):
                 "Сода пищевая", "Сода пищевая двууглекислая", grocery, kg
             ),
             nomenclature_model.create_pancake_portion(dishes, piece),
+            nomenclature_model.create_ingredient(
+                "Плёнка пищевая", "Плёнка пищевая ПВХ 300 мм", packaging, piece
+            ),
+            nomenclature_model.create_ingredient(
+                "Упаковка оладий", "Оладьи пышные, упакованные", dishes, piece
+            ),
         )
         for item in items:
             self.add_object(nomenclature_model, self.__nomenclatures, item)
 
-    # ------------------------------------------------------------------
-    # Склады — через фабрики storage_model
-    # ------------------------------------------------------------------
     def __create_storages(self) -> None:
+        """
+        Склады — через фабрики storage_model
+        """
         for storage in (storage_model.create_main(), storage_model.create_fridge()):
             self.add_object(storage_model, self.__storages, storage)
 
-    # ------------------------------------------------------------------
-    # Рецепт — через фабрику recipe_model
-    # ------------------------------------------------------------------
     def __create_recipes(self) -> None:
-        recipe = recipe_model.create_pancakes_recipe(self.__nomenclatures)
-        self.add_object(recipe_model, self.__recipes, recipe)
+        """Рецепт — через фабрику recipe_model"""
+        for recipe in (
+            recipe_model.create_pancakes_recipe(self.__nomenclatures),
+            recipe_model.create_packed_pancakes_recipe(self.__nomenclatures),
+        ):
+            self.add_object(recipe_model, self.__recipes, recipe)
 
-    # ------------------------------------------------------------------
-    # Общий метод добавления
-    # ------------------------------------------------------------------
     def add_object(self, type_, group, item) -> bool:
+        """Общий метод добвления"""
         try:
             validator.validate(item, type_)
             if item.id in group:

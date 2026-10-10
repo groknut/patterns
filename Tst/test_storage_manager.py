@@ -41,10 +41,11 @@ def test_equals_nomenclature_storage_manager():
 def test_empty_storage_manager_convert_is_first_start_false(settings_managers):
     """Ожидание: Пустые коллекции при is_first_start == False. Не выполняется, все коллекции остаются пустыми."""
     s2 = settings_managers[1]
-    manager = storage_manager()
 
     if hasattr(storage_manager, "instance"):
         del storage_manager.instance
+
+    manager = storage_manager()
 
     try:
         result = manager.convert(s2.is_first)
