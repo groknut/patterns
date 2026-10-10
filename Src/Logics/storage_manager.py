@@ -183,3 +183,47 @@ class storage_manager(abstract_manager):
     @property
     def is_initialized(self) -> bool:
         return self.__is_initialized
+
+
+    # Ревью:
+    # Нет. Не верно. Нужен рекурсивный подход. Не реализован вариант "блюдо в блюде"
+    def get_recipe_by_result(self, nomenclature: nomenclature_model):
+        """Карта, результатом которой является указанная номенклатура, или None."""
+        for r in self.__recipes.values():
+            if r.result == nomenclature:
+                return r
+        return None
+
+    def get_gross_weight(self, recipe: recipe_model, seen: list = None) -> float:
+        """Полный вес Брутто с раскрытием полуфабрикатов."""
+        seen = seen or []
+        if recipe.id in seen:
+            return 0.0
+        seen = seen + [recipe.id]
+
+        total = 0.0
+        for ing in recipe.ingredients:
+            nested = self.get_recipe_by_result(ing.nomenclature)
+            if nested is not None:
+                scale = ing.quantity / nested.output_quantity
+                total += self.get_gross_weight(nested, seen) * scale
+            else:
+                total += ing.gross_weight
+        return total
+
+    def get_net_weight(self, recipe: recipe_model, seen: list = None) -> float:
+        """Полный вес Нетто с раскрытием полуфабрикатов."""
+        seen = seen or []
+        if recipe.id in seen:
+            return 0.0
+        seen = seen + [recipe.id]
+
+        total = 0.0
+        for ing in recipe.ingredients:
+            nested = self.get_recipe_by_result(ing.nomenclature)
+            if nested is not None:
+                scale = ing.quantity / nested.output_quantity
+                total += self.get_net_weight(nested, seen) * scale
+            else:
+                total += ing.net_weight
+        return total
