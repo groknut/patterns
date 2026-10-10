@@ -3,6 +3,7 @@ from Src.Models.group_model import group_model
 from Src.Models.range_model import range_model
 from Src.Core.validator import validator
 
+
 class nomenclature_model(entity_model):
     """Модель номенклатуры
     Содержит:
@@ -22,7 +23,7 @@ class nomenclature_model(entity_model):
         full_name: str = "",
         name: str = "",
         group: group_model = None,
-        range: range_model = None
+        range: range_model = None,
     ) -> None:
         """Инициализирует номенклатуру"""
         super().__init__()
@@ -32,7 +33,7 @@ class nomenclature_model(entity_model):
         self.range = range
 
     @property
-    def full_name(self)->str:
+    def full_name(self) -> str:
         """Возвращает полное наименовныие номенклатуры"""
         return self.__full_name
 
@@ -43,7 +44,7 @@ class nomenclature_model(entity_model):
         self.__full_name = value
 
     @property
-    def group(self)->group_model:
+    def group(self) -> group_model:
         """Возвращает группу номенклатуры"""
         return self.__group
 
@@ -54,7 +55,7 @@ class nomenclature_model(entity_model):
         self.__group = value
 
     @property
-    def range(self)->range_model:
+    def range(self) -> range_model:
         """Возвращает единицу измерения номенклатуры"""
         return self.__range
 
@@ -63,3 +64,27 @@ class nomenclature_model(entity_model):
         """Устанавливает единицу измерения номенклатуры"""
         validator.validate(value, range_model)
         self.__range = value
+
+
+    @staticmethod
+    def create_ingredient(
+        name: str,
+        full_name: str,
+        group: group_model,
+        rng: range_model,
+    ) -> "nomenclature_model":
+        """Универсальная фабрика: ингредиент с заданными именем, группой, единицей."""
+        return nomenclature_model(full_name, name, group, rng)
+
+    @staticmethod
+    def create_pancake_portion(
+        group: group_model,
+        rng: range_model,
+    ) -> "nomenclature_model":
+        """Результат карты: 1 порция оладий."""
+        return nomenclature_model(
+            "Оладьи пышные на кефире, 1 порция",
+            "Порция оладий пышных на кефире",
+            group,
+            rng,
+        )
