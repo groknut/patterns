@@ -13,10 +13,7 @@ def test_valid_result_nomenclature_model_correct():
     group = group_model("Продукты")
     measure = range_model("кг", 1000)
     item = nomenclature_model(
-        full_name="Сахар-песок белый",
-        name="Сахар",
-        group=group,
-        range=measure
+        full_name="Сахар-песок белый", name="Сахар", group=group, range=measure
     )
 
     assert item.name == "Сахар"

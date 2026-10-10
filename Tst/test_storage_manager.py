@@ -3,6 +3,7 @@ from Src.Core.validator import operation_exception
 from Src.Logics.settings_manager import settings_manager
 import pytest
 
+
 @pytest.fixture
 def settings_managers():
     """Генерация settings managers для тестов"""
@@ -13,12 +14,14 @@ def settings_managers():
     s2.is_first = False
     return s1, s2
 
+
 def test_equals_storage_manager():
     """Два новых storage_manager должны быть равны"""
     instance1 = storage_manager()
     instance2 = storage_manager()
 
     assert instance1 == instance2
+
 
 def test_change_is_first_after_initing_storage_manager(settings_managers):
     """Проверяем смену флаша после генерации"""
@@ -33,6 +36,7 @@ def test_equals_nomenclature_storage_manager():
     instance1 = storage_manager()
     instance2 = storage_manager()
     assert instance1.ranges == instance2.ranges
+
 
 def test_empty_storage_manager_convert_is_first_start_false(settings_managers):
     """Ожидание: Пустые коллекции при is_first_start == False. Не выполняется, все коллекции остаются пустыми."""
@@ -51,5 +55,5 @@ def test_empty_storage_manager_convert_is_first_start_false(settings_managers):
         assert len(manager.storages) == 0
 
     finally:
-        if hasattr(storage_manager, 'instance'):
+        if hasattr(storage_manager, "instance"):
             del storage_manager.instance

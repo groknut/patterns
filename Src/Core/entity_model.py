@@ -1,6 +1,7 @@
 from Src.Core.abstract_model import abstract_model
 from Src.Core.validator import validator
 
+
 class entity_model(abstract_model):
     """Общий класс для наследования доменных моделей
     Содержит определения:

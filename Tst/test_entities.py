@@ -1,24 +1,28 @@
 # Необходимо установить pip install pytest в терминале с подключенным Environment
 # Далее, настройки
 # {
-   # "python.testing.pytestArgs": [
-   #     "Tst"
-   # ],
-   # "python.testing.unittestEnabled": false,
-   # "python.testing.pytestEnabled": true
-#}
+# "python.testing.pytestArgs": [
+#     "Tst"
+# ],
+# "python.testing.unittestEnabled": false,
+# "python.testing.pytestEnabled": true
+# }
 
 from Src.Core.entity_model import entity_model
 from Src.Core.validator import argument_exception
 import pytest
 
+
 class test_entity(entity_model):
     """Тестовая сущность"""
+
     pass
+
 
 # Пример простого теста
 def test_start():
     assert 1 == 1
+
 
 def test_abstract_model_get_id_not_null():
     """entity_model id not equals null"""
@@ -33,6 +37,7 @@ def test_unique_entity():
     entity_model_2 = test_entity()
     assert entity_model_1.id != entity_model_2.id
 
+
 def test_argument_exception_witn_empty_name():
     """Тест ошибки на пустое имя"""
     entity_model = test_entity()
@@ -41,12 +46,14 @@ def test_argument_exception_witn_empty_name():
     with pytest.raises(argument_exception) as exception:
         entity_model.name = empty_name
 
+
 def test_max_len_exception_with_set_name():
     """Тест ошибки на имя больше 50 символов"""
     entity_model = test_entity()
-    new_name = "a"*51
+    new_name = "a" * 51
     with pytest.raises(argument_exception) as exception:
         entity_model.name = new_name
+
 
 def test_private_fields_not_visible():
     """__id, __name не доступны"""

@@ -1,8 +1,9 @@
 from abc import ABC
 
+
 class abstract_manager(ABC):
-    """Абстрактный класс для реализации загрузки и обработки данных
-    """
+    """Абстрактный класс для реализации загрузки и обработки данных"""
+
     # полный путь к файлу
     __file_name: str = ""
     # подготовлены ли данные
@@ -10,7 +11,7 @@ class abstract_manager(ABC):
     # сами данные
     __data: list = []
 
-    def load(self, filename: str = '') -> None:
+    def load(self, filename: str = "") -> None:
         """Загрузить данные"""
         pass
 
