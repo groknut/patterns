@@ -2,16 +2,18 @@ from Src.Core.abstract_model import abstract_model
 from Src.Models.company_model import company_model
 from Src.Core.validator import validator
 
+
 class settings_model(abstract_model):
     """Менеджер настроек
-        - Организация
-        - Руководитель
-        - Бухгалтер
-        - Первая инициализация (true | false)
+    - Организация
+    - Руководитель
+    - Бухгалтер
+    - Первая инициализация (true | false)
     """
+
     __organization: company_model = None
-    __boss_name: str = ''
-    __account_name: str = ''
+    __boss_name: str = ""
+    __account_name: str = ""
     __is_first_work: bool = False
 
     @property

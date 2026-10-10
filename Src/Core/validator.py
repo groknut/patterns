@@ -1,19 +1,20 @@
-
-
 class argument_exception(Exception):
     """
     Исключение при проверки аргумента
     """
+
     def __init__(self, message: str):
         self.__message = message.strip()
 
     def __str__(self):
         return self.__message
 
+
 class operation_exception(Exception):
     """
     Исключение при выполнении бизнес операции
     """
+
     pass
 
 
@@ -21,8 +22,9 @@ class validator:
     """
     Набор проверок данных
     """
+
     @staticmethod
-    def validate( value, type_, len_= None):
+    def validate(value, type_, len_=None):
         """
             Валидация аргумента по типу и длине
         Args:
@@ -45,7 +47,9 @@ class validator:
 
         # Проверка типа
         if not isinstance(value, type_):
-            raise argument_exception(f"Некорректный тип!\nОжидается {type_}. Текущий тип {type(value)}")
+            raise argument_exception(
+                f"Некорректный тип!\nОжидается {type_}. Текущий тип {type(value)}"
+            )
 
         # Проверка аргумента
         if len(str(value).strip()) == 0:
