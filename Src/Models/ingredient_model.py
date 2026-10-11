@@ -16,6 +16,7 @@ class ingredient_model(entity_model):
     __quantity: float = 0.0
     __loss_ratio: float = 0.0
     __grams_per_unit: float = None
+    __sub_recipe = None
 
     def __init__(
         self,
@@ -88,11 +89,26 @@ class ingredient_model(entity_model):
         return self.__range.grams_per_unit
 
     @property
+    def sub_recipe(self):
+        """Карта полуфабриката, если эта номенклатура — результат другой карты."""
+        return self.__sub_recipe
+
+    @sub_recipe.setter
+    def sub_recipe(self, value) -> None:
+        self.__sub_recipe = value
+
+    @property
     def gross_weight(self) -> float:
-        """Брутто в граммах — до потерь."""
+        """Брутто: из карты полуфабриката (с масштабом) или собственный вес."""
+        if self.__sub_recipe is not None:
+            scale = self.__quantity / self.__sub_recipe.output_quantity
+            return self.__sub_recipe.gross_weight * scale
         return self.__quantity * self.grams_per_unit
 
     @property
     def net_weight(self) -> float:
-        """Нетто в граммах — после потерь."""
+        """Нетто: из карты полуфабриката (с масштабом) или собственный вес с потерями."""
+        if self.__sub_recipe is not None:
+            scale = self.__quantity / self.__sub_recipe.output_quantity
+            return self.__sub_recipe.net_weight * scale
         return self.gross_weight * (1 - self.__loss_ratio)

@@ -54,11 +54,13 @@ classDiagram
         -__quantity: float
         -__loss_ratio: float
         -__grams_per_unit: float
+        -__sub_recipe: recipe_model
         +nomenclature: nomenclature_model
         +range: range_model
         +quantity: float
         +loss_ratio: float
         +grams_per_unit: float
+        +sub_recipe: recipe_model
         +gross_weight: float
         +net_weight: float
     }
@@ -95,6 +97,7 @@ classDiagram
 
     ingredient_model   --> nomenclature_model : __nomenclature
     ingredient_model   --> range_model        : __range
+    ingredient_model   --> recipe_model       : __sub_recipe
 
     recipe_model       --> nomenclature_model : __result
     recipe_model       o-- ingredient_model   : __ingredients
