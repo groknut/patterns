@@ -1,13 +1,14 @@
 from Src.Core.validator import validator
 from Src.Core.entity_model import entity_model
 
+
 # Модель организации
 class company_model(entity_model):
-    __inn:int = 0
-    __bic:int = 0
-    __corr_account:int = 0
-    __account:int = 0
-    __ownership:str = ""
+    __inn: int = 0
+    __bic: int = 0
+    __corr_account: int = 0
+    __account: int = 0
+    __ownership: str = ""
 
     # ИНН : 12 симв
     # Счет 11 симв
@@ -23,7 +24,7 @@ class company_model(entity_model):
         bic: int = 0,
         corr_account: int = 0,
         account: int = 0,
-        ownership: str = 'ООО',
+        ownership: str = "ООО",
     ) -> None:
         """Инициализирует организацию"""
         super().__init__()
@@ -40,7 +41,7 @@ class company_model(entity_model):
         return self.__inn
 
     @inn.setter
-    def inn(self, value:int):
+    def inn(self, value: int):
         validator.validate(value, int, 12)
         self.__inn = value
 
@@ -50,7 +51,7 @@ class company_model(entity_model):
         return self.__bic
 
     @bic.setter
-    def bic(self, value:int):
+    def bic(self, value: int):
         validator.validate(value, int, 9)
         self.__bic = value
 
@@ -60,7 +61,7 @@ class company_model(entity_model):
         return self.__corr_account
 
     @corr_account.setter
-    def corr_account(self, value:int):
+    def corr_account(self, value: int):
         validator.validate(value, int, 20)
         self.__corr_account = value
 
@@ -70,7 +71,7 @@ class company_model(entity_model):
         return self.__account
 
     @account.setter
-    def account(self, value:int):
+    def account(self, value: int):
         validator.validate(value, int, 20)
         self.__account = value
 
@@ -80,6 +81,6 @@ class company_model(entity_model):
         return self.__ownership
 
     @ownership.setter
-    def ownership(self, value:str):
+    def ownership(self, value: str):
         validator.validate(value, str, 5)
         self.__ownership = value.strip()

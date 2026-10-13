@@ -5,10 +5,10 @@ from Src.Models.company_model import company_model
 
 
 VALID_NAME = "ООО Ромашка"
-VALID_INN = 123456789012        # 12 цифр
-VALID_BIC = 123456789           # 9 цифр
-VALID_CORR = 12345678901        # 11 цифр
-VALID_ACC = 12345678901         # 11 цифр
+VALID_INN = 123456789012  # 12 цифр
+VALID_BIC = 123456789  # 9 цифр
+VALID_CORR = 12345678901  # 11 цифр
+VALID_ACC = 12345678901  # 11 цифр
 VALID_OWN = "ООО"
 
 
@@ -24,6 +24,7 @@ def valid_company() -> company_model:
         ownership=VALID_OWN,
     )
 
+
 def test_ValidData_CompanyModel_AllFieldsSaved(valid_company):
     """все переданные валидные поля сохраняются без изменений."""
     assert valid_company.name == VALID_NAME
@@ -32,6 +33,7 @@ def test_ValidData_CompanyModel_AllFieldsSaved(valid_company):
     assert valid_company.corr_account == VALID_CORR
     assert valid_company.account == VALID_ACC
     assert valid_company.ownership == VALID_OWN
+
 
 @pytest.mark.parametrize("field", ["inn", "bic", "corr_account", "account"])
 @pytest.mark.parametrize("value", [None, "123", [], True, 1.5, "345"])
