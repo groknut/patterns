@@ -18,7 +18,7 @@ class text_report(abstract_report):
 
         for item in self.__recipe.ingredients:
             data.append(
-                f"{item.id} | {item.name} | {item.gross_weight} {item.net_weight}"
+                f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
             )
 
         result = report_result_model()
