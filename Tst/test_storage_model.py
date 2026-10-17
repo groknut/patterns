@@ -5,6 +5,7 @@ import pytest
 
 class test_entity(storage_model):
     """Тестовая сущность"""
+
     pass
 
 
