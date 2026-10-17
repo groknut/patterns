@@ -8,5 +8,6 @@
     },
     "boss_name": "Иванов Иван Иванович",
     "account_name": "Петров Пётр Петрович",
-    "is_first": true
+    "is_first": true,
+    "response_format": "TXT"
 }
