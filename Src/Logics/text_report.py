@@ -1,26 +1,19 @@
 from Src.Core.abstract_report import abstract_report
+from Src.Core.abstract_model import abstract_model
 from Src.Core.validator import validator
 from Src.Dtos.abstract_result_model import report_result_model
-from Src.Logics.storage_manager import storage_manager
-from Src.Models.recipe_model import recipe_model
+from Src.Logics.report_utils import extract_table
 
 
 class text_report(abstract_report):
-    __recipe: recipe_model
-
     def build(self, source):
-        validator.validate(source, recipe_model)
-        self.__recipe = source
+        validator.validate(source, abstract_model)
+        headers, rows = extract_table(source)
 
-        header = "Код | Наименование | Брутто | Нетто"
-
-        data = []
-
-        for item in self.__recipe.ingredients:
-            data.append(
-                f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
-            )
+        lines = [" | ".join(headers)]
+        for row in rows:
+            lines.append(" | ".join(str(cell) for cell in row))
 
         result = report_result_model()
-        result.text = "\n".join(data)
+        result.text = "\n".join(lines)
         return result

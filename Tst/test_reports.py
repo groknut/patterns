@@ -1,3 +1,4 @@
+from Src.Logics.report_utils import extract_table
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
@@ -56,3 +57,14 @@ def test_report_weights_match_recipe_calculation():
             f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
         )
         assert expected in text
+
+def test_extract_table_recipe_composition():
+    """extract table работает корректно по типу """
+    recipe = _recipe()
+    headers, rows = extract_table(recipe)
+
+    assert headers == ["Код", "Наименование", "Брутто", "Нетто"]
+    assert len(rows) == len(recipe.ingredients)
+    for row, item in zip(rows, recipe.ingredients):
+        assert row[0] == item.id
+        assert row[1] == item.name

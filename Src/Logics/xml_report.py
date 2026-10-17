@@ -1,25 +1,25 @@
 from xml.etree.ElementTree import Element, SubElement, tostring
 
 from Src.Core.abstract_report import abstract_report
+from Src.Core.abstract_model import abstract_model
 from Src.Core.validator import validator
 from Src.Dtos.abstract_result_model import report_result_model
-from Src.Models.recipe_model import recipe_model
+from Src.Logics.report_utils import extract_table
 
 
 class xml_report(abstract_report):
-    __recipe: recipe_model
-
     def build(self, source):
-        validator.validate(source, recipe_model)
-        self.__recipe = source
+        validator.validate(source, abstract_model)
+        headers, rows = extract_table(source)
 
-        root = Element("recipe")
-        for item in self.__recipe.ingredients:
-            row = SubElement(root, "ingredient")
-            SubElement(row, "code").text = item.id
-            SubElement(row, "name").text = item.name
-            SubElement(row, "gross").text = str(item.gross_weight)
-            SubElement(row, "net").text = str(item.net_weight)
+        root = Element("report")
+        root.set("entity", type(source).__name__)
+        for row in rows:
+            row_el = SubElement(root, "row")
+            for header, cell in zip(headers, row):
+                column = SubElement(row_el, "column")
+                column.set("name", header)
+                column.text = str(cell)
 
         result = report_result_model()
         result.text = tostring(root, encoding="unicode")
