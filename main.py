@@ -71,30 +71,34 @@ def get_report():
     return rep.text
 
 
-@app.get(
-    "/api/report/{format}/{entity_type}/{code}",
-    status_code=200,
-    summary="Отчет в указанном формате",
-)
-def get_report_in_format(format: str, entity_type: str, code: str):
-    fmt, source, etype = _resolve(entity_type, code, format)
-    return _render(fmt, source, etype, code)
-
-
-@app.get(
-    "/api/report/default/{entity_type}/{code}",
-    status_code=200,
-    summary="Отчет в формате из настроек (create_default)",
-)
+@app.get("/api/report/default/{entity_type}/{code}", status_code=200,
+         summary="Отчет в формате из настроек (create_default)")
 def get_report_default(entity_type: str, code: str):
     _, source, etype = _resolve(entity_type, code)
     fmt = (
         setting_manager.settings.response_format
-        if setting_manager.settings
-        else report_type_enum.TXT
+        if setting_manager.settings else report_type_enum.TXT
     )
     return _render(fmt, source, etype, code)
 
+
+@app.get("/api/report/{format}/{entity_type}/{code}", status_code=200,
+         summary="Отчет в указанном формате")
+def get_report_in_format(format: str, entity_type: str, code: str):
+    fmt, source, etype = _resolve(entity_type, code, format)
+    return _render(fmt, source, etype, code)
+
+@app.get("/api/entities", summary="Список кодов всех сущностей")
+def list_entities():
+    """Возвращает id всех сущностей — удобно для демонстрации."""
+    def brief(data: dict):
+        return [{"id": x.id, "name": x.name} for x in data.values()]
+
+    return {
+        "nomenclature": brief(storage.nomenclatures),
+        "range": brief(storage.ranges),
+        "recipe": brief(storage.recipes),
+    }
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
