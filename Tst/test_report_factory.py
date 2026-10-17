@@ -11,6 +11,7 @@ def test_create_txt_returns_text_report():
     report = factory.create(report_type_enum.TXT)
     assert isinstance(report, text_report)
 
+
 def test_create_unknown_format_raises():
     """create() - неизвестный формат"""
     factory = report_factory()

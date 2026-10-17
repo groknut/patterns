@@ -67,7 +67,7 @@ def get_report():
     "/api/report/{format}/{entity_type}/{code}",
     summary="Сформировать отчет в указанном формате",
     description="Формат: TXT, CSV, Markdown, XML, HTML. "
-                "Тип: nomenclature, range, recipe. Код — id сущности.",
+    "Тип: nomenclature, range, recipe. Код — id сущности.",
     status_code=status.HTTP_200_OK,
 )
 def get_report_in_format(format: str, entity_type: str, code: str):

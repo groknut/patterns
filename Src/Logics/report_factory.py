@@ -45,9 +45,5 @@ class report_factory(abstract_report_factory):
     def create_default(self) -> abstract_report:
         """Создать отчет в формате из настроек (settings_model.response_format)."""
         settings = self.__settings_manager.settings
-        fmt = (
-            settings.response_format
-            if settings is not None
-            else report_type_enum.TXT
-        )
+        fmt = settings.response_format if settings is not None else report_type_enum.TXT
         return self.create(fmt)

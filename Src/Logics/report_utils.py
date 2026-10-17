@@ -28,22 +28,26 @@ def _recipe_table(recipe: recipe_model):
 
 def _nomenclature_table(nom: nomenclature_model):
     headers = ["Код", "Наименование", "Полное наименование", "Группа", "Ед. изм."]
-    rows = [[
-        nom.id,
-        nom.name,
-        nom.full_name,
-        nom.group.name if nom.group else "",
-        nom.range.name if nom.range else "",
-    ]]
+    rows = [
+        [
+            nom.id,
+            nom.name,
+            nom.full_name,
+            nom.group.name if nom.group else "",
+            nom.range.name if nom.range else "",
+        ]
+    ]
     return headers, rows
 
 
 def _range_table(rng: range_model):
     headers = ["Код", "Наименование", "Коэффициент", "Базовая единица"]
-    rows = [[
-        rng.id,
-        rng.name,
-        str(rng.coef),
-        rng.base.name if rng.base else "-",
-    ]]
+    rows = [
+        [
+            rng.id,
+            rng.name,
+            str(rng.coef),
+            rng.base.name if rng.base else "-",
+        ]
+    ]
     return headers, rows

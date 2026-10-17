@@ -53,13 +53,12 @@ def test_report_weights_match_recipe_calculation():
     recipe = _recipe()
     text = text_report().build(recipe).text
     for item in recipe.ingredients:
-        expected = (
-            f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
-        )
+        expected = f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
         assert expected in text
 
+
 def test_extract_table_recipe_composition():
-    """extract table работает корректно по типу """
+    """extract table работает корректно по типу"""
     recipe = _recipe()
     headers, rows = extract_table(recipe)
 
