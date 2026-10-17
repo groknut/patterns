@@ -108,7 +108,8 @@ class recipe_model(entity_model):
 
     @staticmethod
     def create_pancakes_recipe(nomenclatures: dict) -> "recipe_model":
-        """Фабричный метод: «Оладьи пышные на кефире» на 1 порцию."""
+        """Фабричный метод: «Оладьи пышные на кефире» на 1 порцию.
+        """
         by_name = {n.name: n for n in nomenclatures.values()}
 
         def find(name: str) -> nomenclature_model:

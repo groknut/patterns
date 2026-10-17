@@ -24,7 +24,8 @@ def test_first_start_creates_two_recipes_one_with_packaging():
     assert len(m.recipes) >= 2
 
     has_packaging = any(
-        ing.nomenclature.group is not None and ing.nomenclature.group.name == "Упаковка"
+        ing.nomenclature.group is not None
+        and ing.nomenclature.group.name == "Упаковка"
         for r in m.recipes.values()
         for ing in r.ingredients
     )

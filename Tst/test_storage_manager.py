@@ -59,15 +59,14 @@ def test_empty_storage_manager_convert_is_first_start_false(settings_managers):
         if hasattr(storage_manager, "instance"):
             del storage_manager.instance
 
-
 def test_NestedWeights_RecipeModel_SemiFinishedExpanded():
-    """Блюдо в блюде: вес полуфабриката раскрывается рекурсивно, а не как заглушка."""
+    """Блюдо в блюде: вес полуфабриката раскрывается рекурсивно, а не как заглушка.
+    """
     m = storage_manager()
     m.convert(is_first=True)
 
     parent = next(
-        r
-        for r in m.recipes.values()
+        r for r in m.recipes.values()
         if any(i.sub_recipe is not None for i in r.ingredients)
     )
 
