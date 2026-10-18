@@ -7,6 +7,7 @@ from Src.Logics.report_factory import report_factory
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
+from Src.Logics.report_sources import report_source_factory
 
 app = FastAPI()
 
@@ -14,7 +15,7 @@ setting_manager = settings_manager()
 setting_manager.load()
 storage = storage_manager()
 storage.convert(setting_manager.settings.is_first)
-
+source_factory = report_source_factory()
 
 def _resolve(entity_type: str, code: str, format: str = None):
     """Возвращает (fmt, source, etype) или бросает 400/404."""
@@ -69,15 +70,21 @@ def get_report_default(entity_type: str, code: str):
     report = report_factory().create_default()
     return _render(report, source, etype, code)
 
-@app.get("/api/report/{format}/{entity_type}/{code}")
+@app.get("/api/report/{format}/{entity_type}/{code}", status_code=200,
+         summary="Отчёт в указанном формате")
 def get_report_in_format(format: str, entity_type: str, code: str):
-    fmt, source, etype = _resolve(entity_type, code, format)
+    """Формирует отчёт в указанном формате для сущности по её коду."""
+    fmt, entity, etype = _resolve(entity_type, code, format)
+    source = source_factory.create(etype, entity)
     report = report_factory().create(fmt)
     return _render(report, source, etype, code)
 
-@app.get("/api/entities", summary="Список кодов всех сущностей")
+
+@app.get("/api/entities", status_code=200,
+         summary="Список кодов всех сущностей")
 def list_entities():
-    """Возвращает id всех сущностей — удобно для демонстрации."""
+    """Возвращает id и name всех сущностей — удобно для демонстрации."""
+
     def brief(data: dict):
         return [{"id": x.id, "name": x.name} for x in data.values()]
 
