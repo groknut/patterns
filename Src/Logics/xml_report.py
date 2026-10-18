@@ -1,7 +1,7 @@
 from xml.etree.ElementTree import Element, SubElement, tostring
 
 from Src.Core.abstract_report import abstract_report
-from Src.Core.reportable import reportable
+from Src.Core.report_source import report_source
 from Src.Core.validator import validator
 from Src.Dtos.abstract_result_model import report_result_model
 
@@ -21,7 +21,7 @@ class xml_report(abstract_report):
         return "xml"
 
     def build(self, source):
-        validator.validate(source, reportable)
+        validator.validate(source, report_source)
 
         headers = source.report_headers()
         root = Element("report")

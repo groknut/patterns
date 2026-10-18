@@ -1,9 +1,8 @@
 from Src.Core.entity_model import entity_model
-from Src.Core.reportable import reportable
 from Src.Core.validator import argument_exception, validator
 
 
-class range_model(entity_model, reportable):
+class range_model(entity_model):
     """Модель единицы измерения
     Содержит:
         - базовую единицу измерения
@@ -86,14 +85,3 @@ class range_model(entity_model, reportable):
     @staticmethod
     def create_piece() -> "range_model":
         return range_model(name="штука", coef=1)
-
-    def report_headers(self) -> list[str]:
-            return ["Код", "Наименование", "Коэффициент", "Базовая единица"]
-
-    def report_rows(self) -> list[list[str]]:
-        return [[
-            self.id,
-            self.name,
-            str(self.coef),
-            self.base.name if self.base else "-",
-        ]]

@@ -1,5 +1,5 @@
 from Src.Core.abstract_report import abstract_report
-from Src.Core.reportable import reportable
+from Src.Core.report_source import report_source
 from Src.Core.validator import validator
 from Src.Dtos.abstract_result_model import report_result_model
 
@@ -19,7 +19,7 @@ class markdown_report(abstract_report):
         return "md"
 
     def build(self, source):
-        validator.validate(source, reportable)
+        validator.validate(source, report_source)
 
         headers = source.report_headers()
         lines = ["| " + " | ".join(headers) + " |"]

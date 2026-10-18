@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from Src.Core.reportable import reportable
+
+from Src.Core.report_source import report_source
 from Src.Dtos.abstract_result_model import report_result_model
 
 
@@ -8,7 +9,7 @@ class abstract_report(ABC):
     """Формировать отчет"""
 
     @abstractmethod
-    def build(self, source: reportable) -> report_result_model:
+    def build(self, source: report_source) -> report_result_model:
         pass
 
     @property

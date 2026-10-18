@@ -1,13 +1,12 @@
 from collections.abc import Iterable
 
 from Src.Core.entity_model import entity_model
-from Src.Core.reportable import reportable
 from Src.Core.validator import validator, argument_exception
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.ingredient_model import ingredient_model  # <-- из своего модуля
 
 
-class recipe_model(entity_model, reportable):
+class recipe_model(entity_model):
     """Технологическая карта (рецепт) одной номенклатуры-результата."""
 
     __result: nomenclature_model = None
@@ -195,13 +194,3 @@ class recipe_model(entity_model, reportable):
                 ing("Плёнка пищевая", 1, grams_per_unit=5.0),
             ],
         )
-
-
-    def report_headers(self) -> list[str]:
-        return ["Код", "Наименование", "Брутто", "Нетто"]
-
-    def report_rows(self) -> list[list[str]]:
-        return [
-            [item.id, item.name, str(item.gross_weight), str(item.net_weight)]
-            for item in self.__ingredients.values()
-        ]

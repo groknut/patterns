@@ -1,11 +1,10 @@
 from Src.Core.entity_model import entity_model
-from Src.Core.reportable import reportable
 from Src.Models.group_model import group_model
 from Src.Models.range_model import range_model
 from Src.Core.validator import validator
 
 
-class nomenclature_model(entity_model, reportable):
+class nomenclature_model(entity_model):
     """Модель номенклатуры
     Содержит:
         - полное наименование
@@ -89,16 +88,3 @@ class nomenclature_model(entity_model, reportable):
             group,
             rng,
         )
-
-
-    def report_headers(self) -> list[str]:
-            return ["Код", "Наименование", "Полное наименование", "Группа", "Ед. изм."]
-
-    def report_rows(self) -> list[list[str]]:
-        return [[
-            self.id,
-            self.name,
-            self.full_name,
-            self.group.name if self.group else "",
-            self.range.name if self.range else "",
-        ]]
