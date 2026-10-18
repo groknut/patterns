@@ -37,26 +37,19 @@ def _resolve(entity_type: str, code: str, format: str = None):
     return fmt, source, etype
 
 
-def _render(fmt, source, etype, code):
-    """CSV/Markdown — файл (attachment); TXT/XML/HTML — структурированный текст."""
-    result = report_factory().create(fmt).build(source)
+def _render(report, source, etype, code):
+    result = report.build(source)
 
-    if fmt in (report_type_enum.CSV, report_type_enum.MARKDOWN):
-        ext = "csv" if fmt == report_type_enum.CSV else "md"
+    if report.is_binary:
         return Response(
             content=bytes(result.binary),
-            media_type=f"text/{fmt.value.lower()}; charset=utf-8",
+            media_type=report.media_type,
             headers={
-                "Content-Disposition": f'attachment; filename="report_{etype.value}_{code[:8]}.{ext}"'
+                "Content-Disposition":
+                    f'attachment; filename="report_{etype.value}_{code[:8]}.{report.file_extension}"'
             },
         )
-
-    media = {
-        report_type_enum.TXT: "text/plain",
-        report_type_enum.XML: "application/xml",
-        report_type_enum.HTML: "text/html",
-    }[fmt]
-    return Response(content=result.text, media_type=f"{media}; charset=utf-8")
+    return Response(content=result.text, media_type=report.media_type)
 
 
 @app.post("/")
@@ -70,23 +63,17 @@ def get_report():
     assert rep.binary == [] and rep.text != ""
     return rep.text
 
-
-@app.get("/api/report/default/{entity_type}/{code}", status_code=200,
-         summary="Отчет в формате из настроек (create_default)")
+@app.get("/api/report/default/{entity_type}/{code}")
 def get_report_default(entity_type: str, code: str):
-    _, source, etype = _resolve(entity_type, code)
-    fmt = (
-        setting_manager.settings.response_format
-        if setting_manager.settings else report_type_enum.TXT
-    )
-    return _render(fmt, source, etype, code)
+    fmt, source, etype = _resolve(entity_type, code)
+    report = report_factory().create_default()
+    return _render(report, source, etype, code)
 
-
-@app.get("/api/report/{format}/{entity_type}/{code}", status_code=200,
-         summary="Отчет в указанном формате")
+@app.get("/api/report/{format}/{entity_type}/{code}")
 def get_report_in_format(format: str, entity_type: str, code: str):
     fmt, source, etype = _resolve(entity_type, code, format)
-    return _render(fmt, source, etype, code)
+    report = report_factory().create(fmt)
+    return _render(report, source, etype, code)
 
 @app.get("/api/entities", summary="Список кодов всех сущностей")
 def list_entities():
