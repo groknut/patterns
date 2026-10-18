@@ -1,4 +1,4 @@
-from Src.Logics.report_utils import extract_table
+from Src.Core.validator import argument_exception
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
@@ -9,13 +9,14 @@ from Src.Logics.html_report import html_report
 
 
 def _recipe():
+    """Возвращает первый рецепт из storage_manager после инициализации."""
     settings_manager().load()
     storage_manager().convert(True)
     return next(iter(storage_manager().recipes.values()))
 
 
 def test_binary_reports_return_binary():
-    """CSV и Markdown — binary заполнен, text пуст (задача 7)."""
+    """CSV и Markdown отдают binary, text пуст — форматы для скачивания файла."""
     recipe = _recipe()
     for report in (csv_report(), markdown_report()):
         result = report.build(recipe)
@@ -24,7 +25,7 @@ def test_binary_reports_return_binary():
 
 
 def test_text_reports_return_text():
-    """TXT, XML, HTML — text заполнен, binary пуст."""
+    """TXT, XML и HTML отдают text, binary пуст — структурированный текст."""
     recipe = _recipe()
     for report in (text_report(), xml_report(), html_report()):
         result = report.build(recipe)
@@ -33,7 +34,7 @@ def test_text_reports_return_text():
 
 
 def test_all_reports_contain_all_ingredients():
-    """В каждом отчёте присутствуют все id и name ингредиентов рецепта."""
+    """В каждом из 5 форматов присутствуют id и name всех ингредиентов рецепта."""
     recipe = _recipe()
     results = [
         text_report().build(recipe).text,
@@ -49,7 +50,7 @@ def test_all_reports_contain_all_ingredients():
 
 
 def test_report_weights_match_recipe_calculation():
-    """Брутто/нетто в TXT-отчёте совпадают с расчётом recipe_model."""
+    """Брутто и нетто в TXT-отчёте совпадают с расчётом recipe_model."""
     recipe = _recipe()
     text = text_report().build(recipe).text
     for item in recipe.ingredients:
@@ -57,13 +58,23 @@ def test_report_weights_match_recipe_calculation():
         assert expected in text
 
 
-def test_extract_table_recipe_composition():
-    """extract table работает корректно по типу"""
+def test_recipe_reportable_headers_and_rows():
+    """recipe_model реализует reportable: заголовки и строки по ингредиентам."""
     recipe = _recipe()
-    headers, rows = extract_table(recipe)
+    headers = recipe.report_headers()
+    rows = recipe.report_rows()
 
     assert headers == ["Код", "Наименование", "Брутто", "Нетто"]
     assert len(rows) == len(recipe.ingredients)
     for row, item in zip(rows, recipe.ingredients):
         assert row[0] == item.id
         assert row[1] == item.name
+
+
+def test_text_report_unknown_entity_raises():
+    """text_report.build() бросает argument_exception на не-reportable объекте."""
+    try:
+        text_report().build("not-a-model")
+        assert False
+    except argument_exception:
+        assert True
