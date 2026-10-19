@@ -17,25 +17,27 @@ storage = storage_manager()
 storage.convert(setting_manager.settings.is_first)
 source_factory = report_source_factory()
 
+
 def _resolve(entity_type: str, code: str, format: str = None):
-    """Возвращает (fmt, source, etype) или бросает 400/404."""
+    """Возвращает (fmt, entity, etype) или бросает 400/404."""
     try:
         etype = entity_type_enum.from_str(entity_type)
         fmt = report_type_enum.from_str(format) if format else None
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-    source = {
+    entity = {
         entity_type_enum.NOMENCLATURE: storage.nomenclatures,
         entity_type_enum.RANGE: storage.ranges,
         entity_type_enum.RECIPE: storage.recipes,
     }[etype].get(code)
-    if source is None:
+
+    if entity is None:
         raise HTTPException(
             status_code=404,
             detail=f"Сущность {etype.value} с кодом {code} не найдена",
         )
-    return fmt, source, etype
+    return fmt, entity, etype
 
 
 def _render(report, source, etype, code):
@@ -60,15 +62,21 @@ async def main():
 
 @app.get("/api/get_report", status_code=status.HTTP_200_OK)
 def get_report():
-    rep = text_report().build(next(iter(storage.recipes.values())))
+    recipe = next(iter(storage.recipes.values()))
+    source = source_factory.create(entity_type_enum.RECIPE, recipe)
+    rep = text_report().build(source)
     assert rep.binary == [] and rep.text != ""
     return rep.text
 
-@app.get("/api/report/default/{entity_type}/{code}")
+
+@app.get("/api/report/default/{entity_type}/{code}", status_code=200,
+         summary="Отчёт в формате из настроек (create_default)")
 def get_report_default(entity_type: str, code: str):
-    fmt, source, etype = _resolve(entity_type, code)
+    _, entity, etype = _resolve(entity_type, code)
+    source = source_factory.create(etype, entity)
     report = report_factory().create_default()
     return _render(report, source, etype, code)
+
 
 @app.get("/api/report/{format}/{entity_type}/{code}", status_code=200,
          summary="Отчёт в указанном формате")
@@ -93,6 +101,7 @@ def list_entities():
         "range": brief(storage.ranges),
         "recipe": brief(storage.recipes),
     }
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
