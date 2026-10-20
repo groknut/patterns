@@ -1,8 +1,10 @@
+import json
+
 from Src.Core.abstract_manager import abstract_manager
 from Src.Core.validator import validator
-import json
-from Src.Models.settings_model import settings_model
+from Src.Dtos.report_type_dto import report_type_enum
 from Src.Models.company_model import company_model
+from Src.Models.settings_model import settings_model
 
 
 class settings_manager(abstract_manager):
@@ -29,7 +31,7 @@ class settings_manager(abstract_manager):
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
-            cls.instance = super(settings_manager, cls).__new__(cls)
+            cls.instance = super().__new__(cls)
         return cls.instance
 
     @property
@@ -68,6 +70,10 @@ class settings_manager(abstract_manager):
             self.__settings.boss_name = self._require(self.__data, "boss_name")
             self.__settings.account_name = self._require(self.__data, "account_name")
             self.__settings.is_first = bool(self.__data.get("is_first", False))
+
+            self.__settings.response_format = report_type_enum.from_str(
+                self.__data.get("response_format", "TXT")
+            )
 
             return True
         except (KeyError, TypeError, ValueError, AttributeError) as e:

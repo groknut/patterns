@@ -1,5 +1,5 @@
-from Src.Logics.settings_manager import settings_manager
 from Src.Core.validator import argument_exception
+from Src.Logics.settings_manager import settings_manager
 
 
 def test_no_raise_settings_manager_load():

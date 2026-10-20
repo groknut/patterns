@@ -1,14 +1,15 @@
 import pytest
 
 from Src.Core.validator import argument_exception
-from Src.Models.range_model import range_model
-from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.group_model import group_model
 from Src.Models.ingredient_model import ingredient_model
+from Src.Models.nomenclature_model import nomenclature_model
+from Src.Models.range_model import range_model
 
 GRAM = range_model(name="грамм", coef=1)
 KILOGRAM = range_model(name="килограмм", coef=1000, base=GRAM)
 PIECE = range_model(name="штука", coef=1)
+
 
 def make_nomenclature(
     name: str = "Мука ржаная", rng: range_model = KILOGRAM
@@ -49,7 +50,9 @@ def test_ValidParams_IngredientModel_FieldsSet():
 
 @pytest.mark.parametrize("quantity", [0, -1, None, "80"])
 @pytest.mark.parametrize("loss_ratio", [-0.1, 1, None, "0.1"])
-def test_InvalidQuantityOrLoss_IngredientModel_RaisesArgumentException(quantity, loss_ratio):
+def test_InvalidQuantityOrLoss_IngredientModel_RaisesArgumentException(
+    quantity, loss_ratio
+):
     """Некорректные количество и доля потерь вызывают argument_exception."""
     with pytest.raises(argument_exception):
         make_ingredient(quantity=quantity, loss_ratio=loss_ratio)

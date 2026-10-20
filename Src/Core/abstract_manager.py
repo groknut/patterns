@@ -13,7 +13,6 @@ class abstract_manager(ABC):
 
     def load(self, filename: str = "") -> None:
         """Загрузить данные"""
-        pass
 
     def convert(self) -> bool:
         """обработать внутренние данные"""

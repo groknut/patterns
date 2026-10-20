@@ -3,7 +3,6 @@ import pytest
 from Src.Core.validator import argument_exception
 from Src.Models.company_model import company_model
 
-
 VALID_NAME = "ООО Ромашка"
 VALID_INN = 123456789012  # 12 цифр
 VALID_BIC = 123456789  # 9 цифр

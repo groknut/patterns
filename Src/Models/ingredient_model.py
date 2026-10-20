@@ -1,5 +1,5 @@
 from Src.Core.entity_model import entity_model
-from Src.Core.validator import validator, argument_exception
+from Src.Core.validator import argument_exception, validator
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
 
@@ -24,7 +24,7 @@ class ingredient_model(entity_model):
         range_: range_model = None,
         quantity: float = 0.0,
         loss_ratio: float = 0.0,
-        grams_per_unit: float = None,
+        grams_per_unit: float | None = None,
     ) -> None:
         super().__init__()
         if nomenclature is not None:

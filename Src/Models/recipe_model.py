@@ -1,9 +1,9 @@
 from collections.abc import Iterable
 
 from Src.Core.entity_model import entity_model
-from Src.Core.validator import validator, argument_exception
-from Src.Models.nomenclature_model import nomenclature_model
+from Src.Core.validator import argument_exception, validator
 from Src.Models.ingredient_model import ingredient_model  # <-- из своего модуля
+from Src.Models.nomenclature_model import nomenclature_model
 
 
 class recipe_model(entity_model):
@@ -108,8 +108,7 @@ class recipe_model(entity_model):
 
     @staticmethod
     def create_pancakes_recipe(nomenclatures: dict) -> "recipe_model":
-        """Фабричный метод: «Оладьи пышные на кефире» на 1 порцию.
-        """
+        """Фабричный метод: «Оладьи пышные на кефире» на 1 порцию."""
         by_name = {n.name: n for n in nomenclatures.values()}
 
         def find(name: str) -> nomenclature_model:
@@ -136,14 +135,20 @@ class recipe_model(entity_model):
             output_quantity=1,
             cooking_time_minutes=30,
             steps=[
-                "Подготовка сырья: муку просеять, масло растопить до 40 °C, "
-                "яйца промыть, кефир подогреть до 22 °C.",
-                "Замес: взбить яйца с сахарной пудрой и содой, влить тёплый кефир, "
-                "ввести муку порциями, добавить растопленное масло. "
-                "Дать тесту отдохнуть 10–15 минут.",
-                "Выпекание: сковороду разогреть до 170–190 °C, выкладывать тесто "
-                "по 40–50 г, обжарить 2–3 минуты с одной стороны и "
-                "1,5–2 минуты с другой до золотистой корочки.",
+                (
+                    "Подготовка сырья: муку просеять, масло растопить до 40 °C, "
+                    "яйца промыть, кефир подогреть до 22 °C."
+                ),
+                (
+                    "Замес: взбить яйца с сахарной пудрой и содой, влить тёплый кефир, "
+                    "ввести муку порциями, добавить растопленное масло. "
+                    "Дать тесту отдохнуть 10–15 минут."
+                ),
+                (
+                    "Выпекание: сковороду разогреть до 170–190 °C, выкладывать тесто "
+                    "по 40–50 г, обжарить 2–3 минуты с одной стороны и "
+                    "1,5–2 минуты с другой до золотистой корочки."
+                ),
             ],
             ingredients=[
                 ing("Мука ржаная", 0.0625, loss_ratio=0.02),  # 62,5 г

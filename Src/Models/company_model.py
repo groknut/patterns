@@ -1,5 +1,5 @@
-from Src.Core.validator import validator
 from Src.Core.entity_model import entity_model
+from Src.Core.validator import validator
 
 
 # Модель организации

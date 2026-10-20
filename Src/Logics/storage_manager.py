@@ -1,10 +1,10 @@
 from Src.Core.abstract_manager import abstract_manager
-from Src.Core.validator import validator, argument_exception
-from Src.Models.range_model import range_model
-from Src.Models.nomenclature_model import nomenclature_model
+from Src.Core.validator import argument_exception, validator
 from Src.Models.group_model import group_model
-from Src.Models.storage_model import storage_model
+from Src.Models.nomenclature_model import nomenclature_model
+from Src.Models.range_model import range_model
 from Src.Models.recipe_model import recipe_model
+from Src.Models.storage_model import storage_model
 
 
 class storage_manager(abstract_manager):
@@ -21,7 +21,7 @@ class storage_manager(abstract_manager):
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
-            obj = super(storage_manager, cls).__new__(cls)
+            obj = super().__new__(cls)
             obj.__ranges = {}
             obj.__storages = {}
             obj.__nomenclatures = {}

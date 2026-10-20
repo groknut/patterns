@@ -8,15 +8,14 @@
 # "python.testing.pytestEnabled": true
 # }
 
+import pytest
+
 from Src.Core.entity_model import entity_model
 from Src.Core.validator import argument_exception
-import pytest
 
 
 class test_entity(entity_model):
     """Тестовая сущность"""
-
-    pass
 
 
 # Пример простого теста
@@ -43,7 +42,7 @@ def test_argument_exception_witn_empty_name():
     entity_model = test_entity()
     empty_name = ""
 
-    with pytest.raises(argument_exception) as exception:
+    with pytest.raises(argument_exception):
         entity_model.name = empty_name
 
 
@@ -51,7 +50,7 @@ def test_max_len_exception_with_set_name():
     """Тест ошибки на имя больше 50 символов"""
     entity_model = test_entity()
     new_name = "a" * 51
-    with pytest.raises(argument_exception) as exception:
+    with pytest.raises(argument_exception):
         entity_model.name = new_name
 
 
