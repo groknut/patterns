@@ -1,6 +1,6 @@
+from Src.Logics.report_sources import recipe_report_source
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
-from Src.Logics.report_sources import recipe_report_source
 
 
 def test_build_txt_from_storage_returns_text():

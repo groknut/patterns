@@ -1,7 +1,7 @@
 from Src.Core.entity_model import entity_model
+from Src.Core.validator import validator
 from Src.Models.group_model import group_model
 from Src.Models.range_model import range_model
-from Src.Core.validator import validator
 
 
 class nomenclature_model(entity_model):
@@ -64,7 +64,6 @@ class nomenclature_model(entity_model):
         """Устанавливает единицу измерения номенклатуры"""
         validator.validate(value, range_model)
         self.__range = value
-
 
     @staticmethod
     def create_ingredient(

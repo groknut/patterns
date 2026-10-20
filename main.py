@@ -2,12 +2,12 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import Response
 
-from Src.Dtos.report_type_dto import report_type_enum, entity_type_enum
+from Src.Dtos.report_type_dto import entity_type_enum, report_type_enum
 from Src.Logics.report_factory import report_factory
+from Src.Logics.report_sources import report_source_factory
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
-from Src.Logics.report_sources import report_source_factory
 
 app = FastAPI()
 
@@ -18,7 +18,7 @@ storage.convert(setting_manager.settings.is_first)
 source_factory = report_source_factory()
 
 
-def _resolve(entity_type: str, code: str, format: str = None):
+def _resolve(entity_type: str, code: str, format: str | None = None):
     """Возвращает (fmt, entity, etype) или бросает 400/404."""
     try:
         etype = entity_type_enum.from_str(entity_type)
@@ -48,8 +48,7 @@ def _render(report, source, etype, code):
             content=bytes(result.binary),
             media_type=report.media_type,
             headers={
-                "Content-Disposition":
-                    f'attachment; filename="report_{etype.value}_{code[:8]}.{report.file_extension}"'
+                "Content-Disposition": f'attachment; filename="report_{etype.value}_{code[:8]}.{report.file_extension}"'
             },
         )
     return Response(content=result.text, media_type=report.media_type)
@@ -69,8 +68,11 @@ def get_report():
     return rep.text
 
 
-@app.get("/api/report/default/{entity_type}/{code}", status_code=200,
-         summary="Отчёт в формате из настроек (create_default)")
+@app.get(
+    "/api/report/default/{entity_type}/{code}",
+    status_code=200,
+    summary="Отчёт в формате из настроек (create_default)",
+)
 def get_report_default(entity_type: str, code: str):
     _, entity, etype = _resolve(entity_type, code)
     source = source_factory.create(etype, entity)
@@ -78,8 +80,11 @@ def get_report_default(entity_type: str, code: str):
     return _render(report, source, etype, code)
 
 
-@app.get("/api/report/{format}/{entity_type}/{code}", status_code=200,
-         summary="Отчёт в указанном формате")
+@app.get(
+    "/api/report/{format}/{entity_type}/{code}",
+    status_code=200,
+    summary="Отчёт в указанном формате",
+)
 def get_report_in_format(format: str, entity_type: str, code: str):
     """Формирует отчёт в указанном формате для сущности по её коду."""
     fmt, entity, etype = _resolve(entity_type, code, format)
@@ -88,8 +93,7 @@ def get_report_in_format(format: str, entity_type: str, code: str):
     return _render(report, source, etype, code)
 
 
-@app.get("/api/entities", status_code=200,
-         summary="Список кодов всех сущностей")
+@app.get("/api/entities", status_code=200, summary="Список кодов всех сущностей")
 def list_entities():
     """Возвращает id и name всех сущностей — удобно для демонстрации."""
 

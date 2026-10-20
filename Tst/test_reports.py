@@ -1,12 +1,12 @@
 from Src.Core.validator import argument_exception
+from Src.Logics.csv_report import csv_report
+from Src.Logics.html_report import html_report
+from Src.Logics.markdown_report import markdown_report
 from Src.Logics.report_sources import recipe_report_source
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
-from Src.Logics.csv_report import csv_report
-from Src.Logics.markdown_report import markdown_report
 from Src.Logics.xml_report import xml_report
-from Src.Logics.html_report import html_report
 
 
 def _recipe():
@@ -59,9 +59,7 @@ def test_report_weights_match_recipe_calculation():
     text = text_report().build(source).text
 
     for item in recipe.ingredients:
-        expected = (
-            f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
-        )
+        expected = f"{item.id} | {item.name} | {item.gross_weight} | {item.net_weight}"
         assert expected in text
 
 

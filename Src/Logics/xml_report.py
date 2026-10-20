@@ -7,7 +7,6 @@ from Src.Dtos.abstract_result_model import report_result_model
 
 
 class xml_report(abstract_report):
-
     @property
     def is_binary(self) -> bool:
         return False

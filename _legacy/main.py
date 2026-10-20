@@ -1,5 +1,6 @@
-import time, math
 import locale
+import math
+import time
 
 cal_ID = 0
 
@@ -139,7 +140,7 @@ class MonthlyCalendar:
             },
         }
 
-        system_lang, encoding = locale.getdefaultlocale()
+        system_lang, _encoding = locale.getdefaultlocale()
         return langs[system_lang]
 
     def set_styles(self):
@@ -234,7 +235,7 @@ class MonthlyCalendar:
         return int(math.floor((days + firstWDay) / 7) + (firstWDay <= 3))
 
     def table_cell(self, content, cls, date="", style=""):
-        size = int(round(self.__size * 1.5))
+        size = round(self.__size * 1.5)
         html = "<td align=center width=" + str(size) + ' class="' + cls + '"'
 
         if content != "&nbsp;" and cls.lower().find("day") != -1:
@@ -315,8 +316,7 @@ class MonthlyCalendar:
         self.__size = (
             (self.hFontSize > self.dFontSize) and self.hFontSize or self.dFontSize
         )
-        if self.wFontSize > self.__size:
-            self.__size = self.wFontSize
+        self.__size = max(self.__size, self.wFontSize)
 
         date = time.strftime("%Y-%m-%d", time.localtime())
         (curYear, curMonth, curDay) = [int(v) for v in date.split("-")]
@@ -365,7 +365,7 @@ class MonthlyCalendar:
                         cls = "cssDays"
 
                     style = ""
-                    date = "%s-%s-%s" % (self.year, self.month, daycount)
+                    date = f"{self.year}-{self.month}-{daycount}"
 
                     if (daycount == 1 and i < start) or daycount > stop:
                         content = "&nbsp;"

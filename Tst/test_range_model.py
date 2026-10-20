@@ -1,6 +1,7 @@
-from Src.Models.range_model import range_model
 import pytest
+
 from Src.Core.validator import argument_exception
+from Src.Models.range_model import range_model
 
 
 def test_coef_setter_sets_new_value():
@@ -13,5 +14,5 @@ def test_coef_setter_sets_new_value():
 
 def test_coef_negative_raises():
     """Отрицательный коэффициент недопустим."""
-    with pytest.raises(argument_exception) as exc:
+    with pytest.raises(argument_exception):
         range_model("кг", -5)

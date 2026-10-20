@@ -2,8 +2,8 @@ import pytest
 
 from Src.Core.validator import argument_exception
 from Src.Models.group_model import group_model
-from Src.Models.range_model import range_model
 from Src.Models.nomenclature_model import nomenclature_model
+from Src.Models.range_model import range_model
 
 
 def test_valid_result_nomenclature_model_correct():

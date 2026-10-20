@@ -1,6 +1,4 @@
 from Src.Logics.storage_manager import storage_manager
-from Src.Models.recipe_model import recipe_model
-from Src.Models.ingredient_model import ingredient_model
 
 
 def test_first_start_creates_recipe():
@@ -24,8 +22,7 @@ def test_first_start_creates_two_recipes_one_with_packaging():
     assert len(m.recipes) >= 2
 
     has_packaging = any(
-        ing.nomenclature.group is not None
-        and ing.nomenclature.group.name == "Упаковка"
+        ing.nomenclature.group is not None and ing.nomenclature.group.name == "Упаковка"
         for r in m.recipes.values()
         for ing in r.ingredients
     )

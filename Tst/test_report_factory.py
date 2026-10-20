@@ -1,8 +1,8 @@
-from Src.Logics.settings_manager import settings_manager
-from Src.Logics.report_factory import report_factory
-from Src.Logics.text_report import text_report
-from Src.Dtos.report_type_dto import report_type_enum
 from Src.Core.validator import argument_exception
+from Src.Dtos.report_type_dto import report_type_enum
+from Src.Logics.report_factory import report_factory
+from Src.Logics.settings_manager import settings_manager
+from Src.Logics.text_report import text_report
 
 
 def test_create_txt_returns_text_report():

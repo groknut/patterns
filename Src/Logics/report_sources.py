@@ -1,9 +1,9 @@
 from Src.Core.report_source import report_source
 from Src.Core.validator import argument_exception
 from Src.Dtos.report_type_dto import entity_type_enum
-from Src.Models.recipe_model import recipe_model
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
+from Src.Models.recipe_model import recipe_model
 
 
 class recipe_report_source(report_source):
@@ -32,13 +32,15 @@ class nomenclature_report_source(report_source):
         return ["Код", "Наименование", "Полное наименование", "Группа", "Ед. изм."]
 
     def report_rows(self) -> list[list[str]]:
-        return [[
-            self.__nom.id,
-            self.__nom.name,
-            self.__nom.full_name,
-            self.__nom.group.name if self.__nom.group else "",
-            self.__nom.range.name if self.__nom.range else "",
-        ]]
+        return [
+            [
+                self.__nom.id,
+                self.__nom.name,
+                self.__nom.full_name,
+                self.__nom.group.name if self.__nom.group else "",
+                self.__nom.range.name if self.__nom.range else "",
+            ]
+        ]
 
 
 class range_report_source(report_source):
@@ -51,12 +53,14 @@ class range_report_source(report_source):
         return ["Код", "Наименование", "Коэффициент", "Базовая единица"]
 
     def report_rows(self) -> list[list[str]]:
-        return [[
-            self.__rng.id,
-            self.__rng.name,
-            str(self.__rng.coef),
-            self.__rng.base.name if self.__rng.base else "-",
-        ]]
+        return [
+            [
+                self.__rng.id,
+                self.__rng.name,
+                str(self.__rng.coef),
+                self.__rng.base.name if self.__rng.base else "-",
+            ]
+        ]
 
 
 class report_source_factory:

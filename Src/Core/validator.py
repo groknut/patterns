@@ -15,8 +15,6 @@ class operation_exception(Exception):
     Исключение при выполнении бизнес операции
     """
 
-    pass
-
 
 class validator:
     """

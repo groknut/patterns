@@ -10,9 +10,7 @@ class abstract_report_factory(ABC):
     @abstractmethod
     def create(self, report_type: report_type_enum) -> abstract_report:
         """Создает отчет указанного формата."""
-        pass
 
     @abstractmethod
     def create_default(self) -> abstract_report:
         """Создает отчет в формате из настроек приложения."""
-        pass

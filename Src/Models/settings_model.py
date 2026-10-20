@@ -1,7 +1,7 @@
 from Src.Core.abstract_model import abstract_model
+from Src.Core.validator import validator
 from Src.Dtos.report_type_dto import report_type_enum
 from Src.Models.company_model import company_model
-from Src.Core.validator import validator
 
 
 class settings_model(abstract_model):
