@@ -7,7 +7,7 @@ from Src.Core.validator import validator
 
 class reference_convertor(abstract_convertor):
     """Конвертор типа Reference — представление {id, name}."""
-
+    types = (abstract_model,)
     def convert(self, object: Any) -> dict:
-        validator.validate(object, abstract_model)
+        validator.validate(object, self.types)
         return {"id": object.id, "name": getattr(object, "name", "")}
