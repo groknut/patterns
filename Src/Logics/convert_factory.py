@@ -1,58 +1,34 @@
 from typing import Any
 
 from Src.Core.abstract_convertor import abstract_convertor
-from Src.Core.abstract_model import abstract_model
 from Src.Core.validator import argument_exception
 from Src.Logics.basic_convertor import basic_convertor
 from Src.Logics.datetime_convertor import datetime_convertor
-from Src.Logics.reference_convertor import reference_convertor
+from Src.Logics.model_convertor import model_convertor
 
 
 class convert_factory(abstract_convertor):
-    """Фабрика конверторов - собирает словарь по структуре объекта"""
+    """Фабрика конверторов — диспетчер по типам."""
 
     types = ()
 
     def __init__(self) -> None:
-        """Инициализирует набор конверторов для простых, дат и ссылок."""
         self.__convertors = [
             basic_convertor(),
             datetime_convertor(),
-            reference_convertor(),
+            model_convertor(),
         ]
 
     def convert(self, object: Any) -> dict:
-        """Конвертирует объект в словарь."""
-        if isinstance(object, abstract_model):
-            result = {}
-            for name, value in self.__iter_properties(object):
-                convertor = self.__find_convertor(value)
-                if convertor is not None:
-                    result[name] = convertor.convert(value)
-            return result
-
+        """Делегирует конвертору, чей `types` подходит под объект."""
         convertor = self.__find_convertor(object)
-
-        if convertor is not None:
-            return convertor.convert(object)
-
-        raise argument_exception(
-            f"convert_factory не поддерживает тип {type(object).__name__}"
-        )
+        if convertor is None:
+            raise argument_exception(
+                f"convert_factory не поддерживает тип {type(object).__name__}"
+            )
+        return convertor.convert(object)
 
     def __find_convertor(self, obj):
-        """Возвращает первый конвертор, чей `types` подходит под объект, или None."""
         return next(
             (c for c in self.__convertors if isinstance(obj, c.types)), None
         )
-
-    def __iter_properties(self, obj):
-        """Итерирует по публичным @property объекта"""
-        seen = set()
-        for cls in type(obj).__mro__:
-            for name, attr in vars(cls).items():
-                if name in seen:
-                    continue
-                if isinstance(attr, property):
-                    seen.add(name)
-                    yield name, getattr(obj, name)
