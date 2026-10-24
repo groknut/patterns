@@ -1,0 +1,18 @@
+{
+  "full_name": "Плёнка пищевая ПВХ 300 мм",
+  "group": {
+    "id": "63f0d8df0fcc46749ee72ec45bd29845",
+    "name": "Упаковка"
+  },
+  "range": {
+    "base": null,
+    "coef": 1.0,
+    "grams_per_unit": 1.0,
+    "name": "штука",
+    "max_length": 50,
+    "id": "bbad069bc8ad4d439bd97cfdd6ff37f4"
+  },
+  "name": "Плёнка пищевая",
+  "max_length": 50,
+  "id": "5c48e9108efb44b08b22ba7fa38b03c9"
+}
