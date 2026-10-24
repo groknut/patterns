@@ -11,15 +11,13 @@ class reference_convertor(abstract_convertor):
 
     @property
     def types(self) -> tuple[type, ...]:
-        # Поддерживает модели, списки (для рецептов) и словари
         return (abstract_model, list, dict)
 
     def __init__(self) -> None:
-        # Конверторы для базовых значений внутри полей
         self.__field_convertors = [basic_convertor(), datetime_convertor()]
 
     def convert(self, object: Any) -> Any:
-        """Запускает рекурсивную конвертацию"""
+        """Запускает конвертацию."""
         return self.__convert(object, set())
 
     def __convert(self, object: Any, seen: set) -> Any:
@@ -46,7 +44,13 @@ class reference_convertor(abstract_convertor):
 
         else:
             convertor = self._find_convertor(object, self.__field_convertors)
-            return convertor.convert(object) if convertor else object
+            if convertor is None:
+                return object
+
+            res = convertor.convert(object)
+            if isinstance(res, dict) and list(res.keys()) == ["value"]:
+                return res["value"]
+            return res
 
     def __iter_properties(self, obj):
         """Обходит @property и instance-атрибуты."""

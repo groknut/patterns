@@ -1,6 +1,5 @@
 from Src.Logics.reference_convertor import reference_convertor
 from Src.Models.group_model import group_model
-from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
 
 
@@ -9,8 +8,8 @@ def test_convert_reference_convertor_for_group_model():
     g = group_model(name="Бакалея")
     result = reference_convertor().convert(g)
 
-    assert result["id"] == {"value": g.id}
-    assert result["name"] == {"value": "Бакалея"}
+    assert result["id"] == g.id
+    assert result["name"] == "Бакалея"
 
 
 def test_convert_reference_convertor_for_nested_base():
@@ -20,7 +19,7 @@ def test_convert_reference_convertor_for_nested_base():
 
     result = reference_convertor().convert(kg)
 
-    assert result["name"] == {"value": "килограмм"}
-    assert result["coef"] == {"value": 1000.0}
-    assert result["base"]["name"] == {"value": "грамм"}
-    assert result["base"]["coef"] == {"value": 1.0}
+    assert result["name"] == "килограмм"
+    assert result["coef"] == 1000.0
+    assert result["base"]["name"] == "грамм"
+    assert result["base"]["coef"] == 1.0
