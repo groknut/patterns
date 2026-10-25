@@ -12,7 +12,7 @@ class abstract_convertor(ABC):
         ...
 
     @abstractmethod
-    def convert(self, object: Any) -> Any:
+    def convert(self, object: Any, _seen: set | None = None) -> Any:
         """Вернуть словарь по объекту или его полям."""
         ...
 
