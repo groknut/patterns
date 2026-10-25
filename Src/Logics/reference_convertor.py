@@ -2,55 +2,47 @@ from typing import Any
 
 from Src.Core.abstract_convertor import abstract_convertor
 from Src.Core.abstract_model import abstract_model
-from Src.Logics.basic_convertor import basic_convertor
-from Src.Logics.datetime_convertor import datetime_convertor
-
 
 class reference_convertor(abstract_convertor):
     """Глубокий конвертор доменной модели, списков и словарей."""
 
     @property
     def types(self) -> tuple[type, ...]:
-        return (abstract_model, list, dict)
+        return (abstract_model,)
 
-    def __init__(self) -> None:
-        self.__field_convertors = [basic_convertor(), datetime_convertor()]
+    def __init__(self, factory) -> None:
+        self.__factory = factory
 
-    def convert(self, object: Any) -> Any:
+    def convert(self, object: Any, _seen: set = None) -> Any:
         """Запускает конвертацию."""
-        return self.__convert(object, set())
+        if _seen is None:
+            _seen = set()
 
-    def __convert(self, object: Any, seen: set) -> Any:
-        if isinstance(object, abstract_model):
-            if object.id in seen:
-                return {
-                    "id": object.id,
-                    "name": getattr(object, "name", ""),
-                    "_circular": True
-                }
+        if object.id in _seen:
+            return {"id": object.id}
 
-            seen.add(object.id)
+        _seen.add(object.id)
+
+        try:
             result = {}
             for name, value in self.__iter_properties(object):
-                result[name] = self.__convert(value, seen)
-            seen.remove(object.id)
+
+                if value is None:
+                    result[name] = None
+                    continue
+
+                converted = self.__factory.convert(value, _seen)
+
+                if isinstance(converted, dict) and len(converted) == 1:
+                    key = next(iter(converted))
+                    if key in ("value", "iso"):
+                        result[name] = converted[key]
+                        continue
+
+                result[name] = converted
             return result
-
-        elif isinstance(object, list):
-            return [self.__convert(x, seen) for x in object]
-
-        elif isinstance(object, dict):
-            return {k: self.__convert(v, seen) for k, v in object.items()}
-
-        else:
-            convertor = self._find_convertor(object, self.__field_convertors)
-            if convertor is None:
-                return object
-
-            res = convertor.convert(object)
-            if isinstance(res, dict) and list(res.keys()) == ["value"]:
-                return res["value"]
-            return res
+        finally:
+            _seen.discard(object.id)
 
     def __iter_properties(self, obj):
         """Обходит @property и instance-атрибуты."""
