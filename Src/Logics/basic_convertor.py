@@ -9,7 +9,7 @@ class basic_convertor(abstract_convertor):
     def types(self) -> tuple[type, ...]:
         return (int, float, str, bool)
 
-    def convert(self, object: Any) -> dict:
+    def convert(self, object: Any, _seen: set | None = None) -> dict:
         if not isinstance(object, self.types):
             raise argument_exception(f"Ожидается простой тип, получено {type(object).__name__}")
         return {"value": object}
