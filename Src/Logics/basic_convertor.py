@@ -5,6 +5,7 @@ from Src.Core.validator import argument_exception
 
 
 class basic_convertor(abstract_convertor):
+    """Конвертор для простых типов: numeric, str, bool"""
     @property
     def types(self) -> tuple[type, ...]:
         return (int, float, str, bool)

@@ -6,6 +6,7 @@ from Src.Core.validator import argument_exception
 
 
 class datetime_convertor(abstract_convertor):
+    """Конвертор для типов datetime, date"""
     @property
     def types(self) -> tuple[type, ...]:
         return (datetime, date)

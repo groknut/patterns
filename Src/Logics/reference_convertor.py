@@ -10,7 +10,7 @@ class reference_convertor(abstract_convertor):
     def types(self) -> tuple[type, ...]:
         return (abstract_model,)
 
-    def __init__(self, factory) -> None:
+    def __init__(self, factory: abstract_convertor) -> None:
         self.__factory = factory
 
     def convert(self, object: Any, _seen: set = None) -> Any:
