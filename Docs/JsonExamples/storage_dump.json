@@ -1,0 +1,1082 @@
+{
+  "nomenclatures": [
+    {
+      "full_name": "Мука ржаная обдирная",
+      "group": {
+        "id": "c0a3453a5eeb404a91403281b7ede356",
+        "name": "Бакалея"
+      },
+      "range": {
+        "base": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "грамм",
+          "max_length": 50,
+          "id": "2d23dc0b39924feba1d32c0da42b72ab"
+        },
+        "coef": 1000.0,
+        "grams_per_unit": 1000.0,
+        "name": "килограмм",
+        "max_length": 50,
+        "id": "5b55ac1e6dda470d9c8f41b97d736759"
+      },
+      "name": "Мука ржаная",
+      "max_length": 50,
+      "id": "c294061e67de4e61a620eb4bdfbae6e8"
+    },
+    {
+      "full_name": "Кефир коровий пастеризованный 1%",
+      "group": {
+        "id": "192bcc064d544b1a865cf286b91f5366",
+        "name": "Молочные продукты"
+      },
+      "range": {
+        "base": {
+          "base": {
+            "base": null,
+            "coef": 1.0,
+            "grams_per_unit": 1.0,
+            "name": "грамм",
+            "max_length": 50,
+            "id": "11977864a7c54d3caacdd430b1e00776"
+          },
+          "coef": 1000.0,
+          "grams_per_unit": 1000.0,
+          "name": "литр",
+          "max_length": 50,
+          "id": "d5e5e009f3a046b9bb8ec30dbd06f94e"
+        },
+        "coef": 0.001,
+        "grams_per_unit": 1.0,
+        "name": "миллилитр",
+        "max_length": 50,
+        "id": "c90b92683bf147fea955bb634389ba3b"
+      },
+      "name": "Кефир 1%",
+      "max_length": 50,
+      "id": "0e81c18683174c0483abf1a60a714347"
+    },
+    {
+      "full_name": "Яйца перепелиные столовые",
+      "group": {
+        "id": "192bcc064d544b1a865cf286b91f5366",
+        "name": "Молочные продукты"
+      },
+      "range": {
+        "base": null,
+        "coef": 1.0,
+        "grams_per_unit": 1.0,
+        "name": "штука",
+        "max_length": 50,
+        "id": "8b7a54bd81494e84acd3f4d1828748a7"
+      },
+      "name": "Яйца перепелиные",
+      "max_length": 50,
+      "id": "b26844589c4e427bbbb9910d62a879c4"
+    },
+    {
+      "full_name": "Масло топлёное ГОСТ 72.5%",
+      "group": {
+        "id": "192bcc064d544b1a865cf286b91f5366",
+        "name": "Молочные продукты"
+      },
+      "range": {
+        "base": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "грамм",
+          "max_length": 50,
+          "id": "2d23dc0b39924feba1d32c0da42b72ab"
+        },
+        "coef": 1000.0,
+        "grams_per_unit": 1000.0,
+        "name": "килограмм",
+        "max_length": 50,
+        "id": "5b55ac1e6dda470d9c8f41b97d736759"
+      },
+      "name": "Масло топлёное",
+      "max_length": 50,
+      "id": "e122eb83c0ee44c5af9ffa141a555ac6"
+    },
+    {
+      "full_name": "Сахарная пудра М50",
+      "group": {
+        "id": "c0a3453a5eeb404a91403281b7ede356",
+        "name": "Бакалея"
+      },
+      "range": {
+        "base": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "грамм",
+          "max_length": 50,
+          "id": "2d23dc0b39924feba1d32c0da42b72ab"
+        },
+        "coef": 1000.0,
+        "grams_per_unit": 1000.0,
+        "name": "килограмм",
+        "max_length": 50,
+        "id": "5b55ac1e6dda470d9c8f41b97d736759"
+      },
+      "name": "Сахарная пудра",
+      "max_length": 50,
+      "id": "f0bc26e9c427419286dabeb715f0fdeb"
+    },
+    {
+      "full_name": "Сода пищевая двууглекислая",
+      "group": {
+        "id": "c0a3453a5eeb404a91403281b7ede356",
+        "name": "Бакалея"
+      },
+      "range": {
+        "base": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "грамм",
+          "max_length": 50,
+          "id": "2d23dc0b39924feba1d32c0da42b72ab"
+        },
+        "coef": 1000.0,
+        "grams_per_unit": 1000.0,
+        "name": "килограмм",
+        "max_length": 50,
+        "id": "5b55ac1e6dda470d9c8f41b97d736759"
+      },
+      "name": "Сода пищевая",
+      "max_length": 50,
+      "id": "04a1d501693447c3ab82567b8db0d76f"
+    },
+    {
+      "full_name": "Оладьи пышные на кефире, 1 порция",
+      "group": {
+        "id": "c4f739f64e46403ba26f6c8996f43f8a",
+        "name": "Блюда"
+      },
+      "range": {
+        "base": null,
+        "coef": 1.0,
+        "grams_per_unit": 1.0,
+        "name": "штука",
+        "max_length": 50,
+        "id": "8b7a54bd81494e84acd3f4d1828748a7"
+      },
+      "name": "Порция оладий пышных на кефире",
+      "max_length": 50,
+      "id": "d16ef57b9a164eb1852f1f14438d37a3"
+    },
+    {
+      "full_name": "Плёнка пищевая ПВХ 300 мм",
+      "group": {
+        "id": "7b2097b8f31f4eb59b591fc62c13a8c3",
+        "name": "Упаковка"
+      },
+      "range": {
+        "base": null,
+        "coef": 1.0,
+        "grams_per_unit": 1.0,
+        "name": "штука",
+        "max_length": 50,
+        "id": "8b7a54bd81494e84acd3f4d1828748a7"
+      },
+      "name": "Плёнка пищевая",
+      "max_length": 50,
+      "id": "5c89cb6ff7c143d8b7ea4675932eb675"
+    },
+    {
+      "full_name": "Оладьи пышные, упакованные",
+      "group": {
+        "id": "c4f739f64e46403ba26f6c8996f43f8a",
+        "name": "Блюда"
+      },
+      "range": {
+        "base": null,
+        "coef": 1.0,
+        "grams_per_unit": 1.0,
+        "name": "штука",
+        "max_length": 50,
+        "id": "8b7a54bd81494e84acd3f4d1828748a7"
+      },
+      "name": "Упаковка оладий",
+      "max_length": 50,
+      "id": "6a84a619844e419aa12fdd7e0a474557"
+    }
+  ],
+  "ranges": [
+    {
+      "base": null,
+      "coef": 1.0,
+      "grams_per_unit": 1.0,
+      "name": "грамм",
+      "max_length": 50,
+      "id": "8a4746360ebd483cbafbb91a08b99469"
+    },
+    {
+      "base": {
+        "base": null,
+        "coef": 1.0,
+        "grams_per_unit": 1.0,
+        "name": "грамм",
+        "max_length": 50,
+        "id": "2d23dc0b39924feba1d32c0da42b72ab"
+      },
+      "coef": 1000.0,
+      "grams_per_unit": 1000.0,
+      "name": "килограмм",
+      "max_length": 50,
+      "id": "5b55ac1e6dda470d9c8f41b97d736759"
+    },
+    {
+      "base": {
+        "base": null,
+        "coef": 1.0,
+        "grams_per_unit": 1.0,
+        "name": "грамм",
+        "max_length": 50,
+        "id": "55111184deb94711a2b838b5b63a0d0a"
+      },
+      "coef": 1000.0,
+      "grams_per_unit": 1000.0,
+      "name": "литр",
+      "max_length": 50,
+      "id": "6c43a6a016374315965f414429021c72"
+    },
+    {
+      "base": {
+        "base": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "грамм",
+          "max_length": 50,
+          "id": "11977864a7c54d3caacdd430b1e00776"
+        },
+        "coef": 1000.0,
+        "grams_per_unit": 1000.0,
+        "name": "литр",
+        "max_length": 50,
+        "id": "d5e5e009f3a046b9bb8ec30dbd06f94e"
+      },
+      "coef": 0.001,
+      "grams_per_unit": 1.0,
+      "name": "миллилитр",
+      "max_length": 50,
+      "id": "c90b92683bf147fea955bb634389ba3b"
+    },
+    {
+      "base": null,
+      "coef": 1.0,
+      "grams_per_unit": 1.0,
+      "name": "штука",
+      "max_length": 50,
+      "id": "8b7a54bd81494e84acd3f4d1828748a7"
+    }
+  ],
+  "recipes": [
+    {
+      "result": {
+        "full_name": "Оладьи пышные на кефире, 1 порция",
+        "group": {
+          "id": "c4f739f64e46403ba26f6c8996f43f8a",
+          "name": "Блюда"
+        },
+        "range": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "штука",
+          "max_length": 50,
+          "id": "8b7a54bd81494e84acd3f4d1828748a7"
+        },
+        "name": "Порция оладий пышных на кефире",
+        "max_length": 50,
+        "id": "d16ef57b9a164eb1852f1f14438d37a3"
+      },
+      "output_quantity": 1.0,
+      "cooking_time_minutes": 30.0,
+      "steps": [
+        {
+          "value": "Подготовка сырья: муку просеять, масло растопить до 40 °C, яйца промыть, кефир подогреть до 22 °C."
+        },
+        {
+          "value": "Замес: взбить яйца с сахарной пудрой и содой, влить тёплый кефир, ввести муку порциями, добавить растопленное масло. Дать тесту отдохнуть 10–15 минут."
+        },
+        {
+          "value": "Выпекание: сковороду разогреть до 170–190 °C, выкладывать тесто по 40–50 г, обжарить 2–3 минуты с одной стороны и 1,5–2 минуты с другой до золотистой корочки."
+        }
+      ],
+      "ingredients": [
+        {
+          "nomenclature": {
+            "full_name": "Кефир коровий пастеризованный 1%",
+            "group": {
+              "id": "192bcc064d544b1a865cf286b91f5366",
+              "name": "Молочные продукты"
+            },
+            "range": {
+              "base": {
+                "base": {
+                  "base": null,
+                  "coef": 1.0,
+                  "grams_per_unit": 1.0,
+                  "name": "грамм",
+                  "max_length": 50,
+                  "id": "11977864a7c54d3caacdd430b1e00776"
+                },
+                "coef": 1000.0,
+                "grams_per_unit": 1000.0,
+                "name": "литр",
+                "max_length": 50,
+                "id": "d5e5e009f3a046b9bb8ec30dbd06f94e"
+              },
+              "coef": 0.001,
+              "grams_per_unit": 1.0,
+              "name": "миллилитр",
+              "max_length": 50,
+              "id": "c90b92683bf147fea955bb634389ba3b"
+            },
+            "name": "Кефир 1%",
+            "max_length": 50,
+            "id": "0e81c18683174c0483abf1a60a714347"
+          },
+          "range": {
+            "base": {
+              "base": {
+                "base": null,
+                "coef": 1.0,
+                "grams_per_unit": 1.0,
+                "name": "грамм",
+                "max_length": 50,
+                "id": "11977864a7c54d3caacdd430b1e00776"
+              },
+              "coef": 1000.0,
+              "grams_per_unit": 1000.0,
+              "name": "литр",
+              "max_length": 50,
+              "id": "d5e5e009f3a046b9bb8ec30dbd06f94e"
+            },
+            "coef": 0.001,
+            "grams_per_unit": 1.0,
+            "name": "миллилитр",
+            "max_length": 50,
+            "id": "c90b92683bf147fea955bb634389ba3b"
+          },
+          "quantity": 100.0,
+          "loss_ratio": 0.05,
+          "grams_per_unit": 1.0,
+          "sub_recipe": null,
+          "gross_weight": 100.0,
+          "net_weight": 95.0,
+          "name": "Кефир 1%",
+          "max_length": 50,
+          "id": "ae797438227b4de49d2d8fd4eac2cdaf"
+        },
+        {
+          "nomenclature": {
+            "full_name": "Яйца перепелиные столовые",
+            "group": {
+              "id": "192bcc064d544b1a865cf286b91f5366",
+              "name": "Молочные продукты"
+            },
+            "range": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "штука",
+              "max_length": 50,
+              "id": "8b7a54bd81494e84acd3f4d1828748a7"
+            },
+            "name": "Яйца перепелиные",
+            "max_length": 50,
+            "id": "b26844589c4e427bbbb9910d62a879c4"
+          },
+          "range": {
+            "base": null,
+            "coef": 1.0,
+            "grams_per_unit": 1.0,
+            "name": "штука",
+            "max_length": 50,
+            "id": "8b7a54bd81494e84acd3f4d1828748a7"
+          },
+          "quantity": 2.0,
+          "loss_ratio": 0.1,
+          "grams_per_unit": 10.0,
+          "sub_recipe": null,
+          "gross_weight": 20.0,
+          "net_weight": 18.0,
+          "name": "Яйца перепелиные",
+          "max_length": 50,
+          "id": "8e9a9bbe2d35482ca29b84cb91da8586"
+        },
+        {
+          "nomenclature": {
+            "full_name": "Масло топлёное ГОСТ 72.5%",
+            "group": {
+              "id": "192bcc064d544b1a865cf286b91f5366",
+              "name": "Молочные продукты"
+            },
+            "range": {
+              "base": {
+                "base": null,
+                "coef": 1.0,
+                "grams_per_unit": 1.0,
+                "name": "грамм",
+                "max_length": 50,
+                "id": "2d23dc0b39924feba1d32c0da42b72ab"
+              },
+              "coef": 1000.0,
+              "grams_per_unit": 1000.0,
+              "name": "килограмм",
+              "max_length": 50,
+              "id": "5b55ac1e6dda470d9c8f41b97d736759"
+            },
+            "name": "Масло топлёное",
+            "max_length": 50,
+            "id": "e122eb83c0ee44c5af9ffa141a555ac6"
+          },
+          "range": {
+            "base": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "грамм",
+              "max_length": 50,
+              "id": "2d23dc0b39924feba1d32c0da42b72ab"
+            },
+            "coef": 1000.0,
+            "grams_per_unit": 1000.0,
+            "name": "килограмм",
+            "max_length": 50,
+            "id": "5b55ac1e6dda470d9c8f41b97d736759"
+          },
+          "quantity": 0.01,
+          "loss_ratio": 0.15,
+          "grams_per_unit": 1000.0,
+          "sub_recipe": null,
+          "gross_weight": 10.0,
+          "net_weight": 8.5,
+          "name": "Масло топлёное",
+          "max_length": 50,
+          "id": "b848198bc6314c2294d83c0b5a479c86"
+        },
+        {
+          "nomenclature": {
+            "full_name": "Сахарная пудра М50",
+            "group": {
+              "id": "c0a3453a5eeb404a91403281b7ede356",
+              "name": "Бакалея"
+            },
+            "range": {
+              "base": {
+                "base": null,
+                "coef": 1.0,
+                "grams_per_unit": 1.0,
+                "name": "грамм",
+                "max_length": 50,
+                "id": "2d23dc0b39924feba1d32c0da42b72ab"
+              },
+              "coef": 1000.0,
+              "grams_per_unit": 1000.0,
+              "name": "килограмм",
+              "max_length": 50,
+              "id": "5b55ac1e6dda470d9c8f41b97d736759"
+            },
+            "name": "Сахарная пудра",
+            "max_length": 50,
+            "id": "f0bc26e9c427419286dabeb715f0fdeb"
+          },
+          "range": {
+            "base": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "грамм",
+              "max_length": 50,
+              "id": "2d23dc0b39924feba1d32c0da42b72ab"
+            },
+            "coef": 1000.0,
+            "grams_per_unit": 1000.0,
+            "name": "килограмм",
+            "max_length": 50,
+            "id": "5b55ac1e6dda470d9c8f41b97d736759"
+          },
+          "quantity": 0.01,
+          "loss_ratio": 0.0,
+          "grams_per_unit": 1000.0,
+          "sub_recipe": null,
+          "gross_weight": 10.0,
+          "net_weight": 10.0,
+          "name": "Сахарная пудра",
+          "max_length": 50,
+          "id": "326e4aa33aee4beead68e55ff2457d8f"
+        },
+        {
+          "nomenclature": {
+            "full_name": "Сода пищевая двууглекислая",
+            "group": {
+              "id": "c0a3453a5eeb404a91403281b7ede356",
+              "name": "Бакалея"
+            },
+            "range": {
+              "base": {
+                "base": null,
+                "coef": 1.0,
+                "grams_per_unit": 1.0,
+                "name": "грамм",
+                "max_length": 50,
+                "id": "2d23dc0b39924feba1d32c0da42b72ab"
+              },
+              "coef": 1000.0,
+              "grams_per_unit": 1000.0,
+              "name": "килограмм",
+              "max_length": 50,
+              "id": "5b55ac1e6dda470d9c8f41b97d736759"
+            },
+            "name": "Сода пищевая",
+            "max_length": 50,
+            "id": "04a1d501693447c3ab82567b8db0d76f"
+          },
+          "range": {
+            "base": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "грамм",
+              "max_length": 50,
+              "id": "2d23dc0b39924feba1d32c0da42b72ab"
+            },
+            "coef": 1000.0,
+            "grams_per_unit": 1000.0,
+            "name": "килограмм",
+            "max_length": 50,
+            "id": "5b55ac1e6dda470d9c8f41b97d736759"
+          },
+          "quantity": 0.001,
+          "loss_ratio": 0.0,
+          "grams_per_unit": 1000.0,
+          "sub_recipe": null,
+          "gross_weight": 1.0,
+          "net_weight": 1.0,
+          "name": "Сода пищевая",
+          "max_length": 50,
+          "id": "f8fe8bc247b94dbfa7e97028769d85a1"
+        },
+        {
+          "nomenclature": {
+            "full_name": "Мука ржаная обдирная",
+            "group": {
+              "id": "c0a3453a5eeb404a91403281b7ede356",
+              "name": "Бакалея"
+            },
+            "range": {
+              "base": {
+                "base": null,
+                "coef": 1.0,
+                "grams_per_unit": 1.0,
+                "name": "грамм",
+                "max_length": 50,
+                "id": "2d23dc0b39924feba1d32c0da42b72ab"
+              },
+              "coef": 1000.0,
+              "grams_per_unit": 1000.0,
+              "name": "килограмм",
+              "max_length": 50,
+              "id": "5b55ac1e6dda470d9c8f41b97d736759"
+            },
+            "name": "Мука ржаная",
+            "max_length": 50,
+            "id": "c294061e67de4e61a620eb4bdfbae6e8"
+          },
+          "range": {
+            "base": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "грамм",
+              "max_length": 50,
+              "id": "2d23dc0b39924feba1d32c0da42b72ab"
+            },
+            "coef": 1000.0,
+            "grams_per_unit": 1000.0,
+            "name": "килограмм",
+            "max_length": 50,
+            "id": "5b55ac1e6dda470d9c8f41b97d736759"
+          },
+          "quantity": 0.0625,
+          "loss_ratio": 0.02,
+          "grams_per_unit": 1000.0,
+          "sub_recipe": null,
+          "gross_weight": 62.5,
+          "net_weight": 61.25,
+          "name": "Мука ржаная",
+          "max_length": 50,
+          "id": "76eb258a3bec43dfb3166f0ffc7a9a04"
+        }
+      ],
+      "gross_weight": 203.5,
+      "net_weight": 193.75,
+      "name": "Оладьи пышные на кефире (1 порция)",
+      "max_length": 50,
+      "id": "b9972a2db7d142f19aaee0ae6d37d141"
+    },
+    {
+      "result": {
+        "full_name": "Оладьи пышные, упакованные",
+        "group": {
+          "id": "c4f739f64e46403ba26f6c8996f43f8a",
+          "name": "Блюда"
+        },
+        "range": {
+          "base": null,
+          "coef": 1.0,
+          "grams_per_unit": 1.0,
+          "name": "штука",
+          "max_length": 50,
+          "id": "8b7a54bd81494e84acd3f4d1828748a7"
+        },
+        "name": "Упаковка оладий",
+        "max_length": 50,
+        "id": "6a84a619844e419aa12fdd7e0a474557"
+      },
+      "output_quantity": 1.0,
+      "cooking_time_minutes": 5.0,
+      "steps": [
+        {
+          "value": "Оладьи остудить до комнатной температуры."
+        },
+        {
+          "value": "Уложить в лоток и упаковать в пищевую плёнку."
+        }
+      ],
+      "ingredients": [
+        {
+          "nomenclature": {
+            "full_name": "Оладьи пышные на кефире, 1 порция",
+            "group": {
+              "id": "c4f739f64e46403ba26f6c8996f43f8a",
+              "name": "Блюда"
+            },
+            "range": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "штука",
+              "max_length": 50,
+              "id": "8b7a54bd81494e84acd3f4d1828748a7"
+            },
+            "name": "Порция оладий пышных на кефире",
+            "max_length": 50,
+            "id": "d16ef57b9a164eb1852f1f14438d37a3"
+          },
+          "range": {
+            "base": null,
+            "coef": 1.0,
+            "grams_per_unit": 1.0,
+            "name": "штука",
+            "max_length": 50,
+            "id": "8b7a54bd81494e84acd3f4d1828748a7"
+          },
+          "quantity": 1.0,
+          "loss_ratio": 0.0,
+          "grams_per_unit": 204.0,
+          "sub_recipe": {
+            "result": {
+              "full_name": "Оладьи пышные на кефире, 1 порция",
+              "group": {
+                "id": "c4f739f64e46403ba26f6c8996f43f8a",
+                "name": "Блюда"
+              },
+              "range": {
+                "base": null,
+                "coef": 1.0,
+                "grams_per_unit": 1.0,
+                "name": "штука",
+                "max_length": 50,
+                "id": "8b7a54bd81494e84acd3f4d1828748a7"
+              },
+              "name": "Порция оладий пышных на кефире",
+              "max_length": 50,
+              "id": "d16ef57b9a164eb1852f1f14438d37a3"
+            },
+            "output_quantity": 1.0,
+            "cooking_time_minutes": 30.0,
+            "steps": [
+              {
+                "value": "Подготовка сырья: муку просеять, масло растопить до 40 °C, яйца промыть, кефир подогреть до 22 °C."
+              },
+              {
+                "value": "Замес: взбить яйца с сахарной пудрой и содой, влить тёплый кефир, ввести муку порциями, добавить растопленное масло. Дать тесту отдохнуть 10–15 минут."
+              },
+              {
+                "value": "Выпекание: сковороду разогреть до 170–190 °C, выкладывать тесто по 40–50 г, обжарить 2–3 минуты с одной стороны и 1,5–2 минуты с другой до золотистой корочки."
+              }
+            ],
+            "ingredients": [
+              {
+                "nomenclature": {
+                  "full_name": "Кефир коровий пастеризованный 1%",
+                  "group": {
+                    "id": "192bcc064d544b1a865cf286b91f5366",
+                    "name": "Молочные продукты"
+                  },
+                  "range": {
+                    "base": {
+                      "base": {
+                        "base": null,
+                        "coef": 1.0,
+                        "grams_per_unit": 1.0,
+                        "name": "грамм",
+                        "max_length": 50,
+                        "id": "11977864a7c54d3caacdd430b1e00776"
+                      },
+                      "coef": 1000.0,
+                      "grams_per_unit": 1000.0,
+                      "name": "литр",
+                      "max_length": 50,
+                      "id": "d5e5e009f3a046b9bb8ec30dbd06f94e"
+                    },
+                    "coef": 0.001,
+                    "grams_per_unit": 1.0,
+                    "name": "миллилитр",
+                    "max_length": 50,
+                    "id": "c90b92683bf147fea955bb634389ba3b"
+                  },
+                  "name": "Кефир 1%",
+                  "max_length": 50,
+                  "id": "0e81c18683174c0483abf1a60a714347"
+                },
+                "range": {
+                  "base": {
+                    "base": {
+                      "base": null,
+                      "coef": 1.0,
+                      "grams_per_unit": 1.0,
+                      "name": "грамм",
+                      "max_length": 50,
+                      "id": "11977864a7c54d3caacdd430b1e00776"
+                    },
+                    "coef": 1000.0,
+                    "grams_per_unit": 1000.0,
+                    "name": "литр",
+                    "max_length": 50,
+                    "id": "d5e5e009f3a046b9bb8ec30dbd06f94e"
+                  },
+                  "coef": 0.001,
+                  "grams_per_unit": 1.0,
+                  "name": "миллилитр",
+                  "max_length": 50,
+                  "id": "c90b92683bf147fea955bb634389ba3b"
+                },
+                "quantity": 100.0,
+                "loss_ratio": 0.05,
+                "grams_per_unit": 1.0,
+                "sub_recipe": null,
+                "gross_weight": 100.0,
+                "net_weight": 95.0,
+                "name": "Кефир 1%",
+                "max_length": 50,
+                "id": "ae797438227b4de49d2d8fd4eac2cdaf"
+              },
+              {
+                "nomenclature": {
+                  "full_name": "Яйца перепелиные столовые",
+                  "group": {
+                    "id": "192bcc064d544b1a865cf286b91f5366",
+                    "name": "Молочные продукты"
+                  },
+                  "range": {
+                    "base": null,
+                    "coef": 1.0,
+                    "grams_per_unit": 1.0,
+                    "name": "штука",
+                    "max_length": 50,
+                    "id": "8b7a54bd81494e84acd3f4d1828748a7"
+                  },
+                  "name": "Яйца перепелиные",
+                  "max_length": 50,
+                  "id": "b26844589c4e427bbbb9910d62a879c4"
+                },
+                "range": {
+                  "base": null,
+                  "coef": 1.0,
+                  "grams_per_unit": 1.0,
+                  "name": "штука",
+                  "max_length": 50,
+                  "id": "8b7a54bd81494e84acd3f4d1828748a7"
+                },
+                "quantity": 2.0,
+                "loss_ratio": 0.1,
+                "grams_per_unit": 10.0,
+                "sub_recipe": null,
+                "gross_weight": 20.0,
+                "net_weight": 18.0,
+                "name": "Яйца перепелиные",
+                "max_length": 50,
+                "id": "8e9a9bbe2d35482ca29b84cb91da8586"
+              },
+              {
+                "nomenclature": {
+                  "full_name": "Масло топлёное ГОСТ 72.5%",
+                  "group": {
+                    "id": "192bcc064d544b1a865cf286b91f5366",
+                    "name": "Молочные продукты"
+                  },
+                  "range": {
+                    "base": {
+                      "base": null,
+                      "coef": 1.0,
+                      "grams_per_unit": 1.0,
+                      "name": "грамм",
+                      "max_length": 50,
+                      "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                    },
+                    "coef": 1000.0,
+                    "grams_per_unit": 1000.0,
+                    "name": "килограмм",
+                    "max_length": 50,
+                    "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                  },
+                  "name": "Масло топлёное",
+                  "max_length": 50,
+                  "id": "e122eb83c0ee44c5af9ffa141a555ac6"
+                },
+                "range": {
+                  "base": {
+                    "base": null,
+                    "coef": 1.0,
+                    "grams_per_unit": 1.0,
+                    "name": "грамм",
+                    "max_length": 50,
+                    "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                  },
+                  "coef": 1000.0,
+                  "grams_per_unit": 1000.0,
+                  "name": "килограмм",
+                  "max_length": 50,
+                  "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                },
+                "quantity": 0.01,
+                "loss_ratio": 0.15,
+                "grams_per_unit": 1000.0,
+                "sub_recipe": null,
+                "gross_weight": 10.0,
+                "net_weight": 8.5,
+                "name": "Масло топлёное",
+                "max_length": 50,
+                "id": "b848198bc6314c2294d83c0b5a479c86"
+              },
+              {
+                "nomenclature": {
+                  "full_name": "Сахарная пудра М50",
+                  "group": {
+                    "id": "c0a3453a5eeb404a91403281b7ede356",
+                    "name": "Бакалея"
+                  },
+                  "range": {
+                    "base": {
+                      "base": null,
+                      "coef": 1.0,
+                      "grams_per_unit": 1.0,
+                      "name": "грамм",
+                      "max_length": 50,
+                      "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                    },
+                    "coef": 1000.0,
+                    "grams_per_unit": 1000.0,
+                    "name": "килограмм",
+                    "max_length": 50,
+                    "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                  },
+                  "name": "Сахарная пудра",
+                  "max_length": 50,
+                  "id": "f0bc26e9c427419286dabeb715f0fdeb"
+                },
+                "range": {
+                  "base": {
+                    "base": null,
+                    "coef": 1.0,
+                    "grams_per_unit": 1.0,
+                    "name": "грамм",
+                    "max_length": 50,
+                    "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                  },
+                  "coef": 1000.0,
+                  "grams_per_unit": 1000.0,
+                  "name": "килограмм",
+                  "max_length": 50,
+                  "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                },
+                "quantity": 0.01,
+                "loss_ratio": 0.0,
+                "grams_per_unit": 1000.0,
+                "sub_recipe": null,
+                "gross_weight": 10.0,
+                "net_weight": 10.0,
+                "name": "Сахарная пудра",
+                "max_length": 50,
+                "id": "326e4aa33aee4beead68e55ff2457d8f"
+              },
+              {
+                "nomenclature": {
+                  "full_name": "Сода пищевая двууглекислая",
+                  "group": {
+                    "id": "c0a3453a5eeb404a91403281b7ede356",
+                    "name": "Бакалея"
+                  },
+                  "range": {
+                    "base": {
+                      "base": null,
+                      "coef": 1.0,
+                      "grams_per_unit": 1.0,
+                      "name": "грамм",
+                      "max_length": 50,
+                      "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                    },
+                    "coef": 1000.0,
+                    "grams_per_unit": 1000.0,
+                    "name": "килограмм",
+                    "max_length": 50,
+                    "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                  },
+                  "name": "Сода пищевая",
+                  "max_length": 50,
+                  "id": "04a1d501693447c3ab82567b8db0d76f"
+                },
+                "range": {
+                  "base": {
+                    "base": null,
+                    "coef": 1.0,
+                    "grams_per_unit": 1.0,
+                    "name": "грамм",
+                    "max_length": 50,
+                    "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                  },
+                  "coef": 1000.0,
+                  "grams_per_unit": 1000.0,
+                  "name": "килограмм",
+                  "max_length": 50,
+                  "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                },
+                "quantity": 0.001,
+                "loss_ratio": 0.0,
+                "grams_per_unit": 1000.0,
+                "sub_recipe": null,
+                "gross_weight": 1.0,
+                "net_weight": 1.0,
+                "name": "Сода пищевая",
+                "max_length": 50,
+                "id": "f8fe8bc247b94dbfa7e97028769d85a1"
+              },
+              {
+                "nomenclature": {
+                  "full_name": "Мука ржаная обдирная",
+                  "group": {
+                    "id": "c0a3453a5eeb404a91403281b7ede356",
+                    "name": "Бакалея"
+                  },
+                  "range": {
+                    "base": {
+                      "base": null,
+                      "coef": 1.0,
+                      "grams_per_unit": 1.0,
+                      "name": "грамм",
+                      "max_length": 50,
+                      "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                    },
+                    "coef": 1000.0,
+                    "grams_per_unit": 1000.0,
+                    "name": "килограмм",
+                    "max_length": 50,
+                    "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                  },
+                  "name": "Мука ржаная",
+                  "max_length": 50,
+                  "id": "c294061e67de4e61a620eb4bdfbae6e8"
+                },
+                "range": {
+                  "base": {
+                    "base": null,
+                    "coef": 1.0,
+                    "grams_per_unit": 1.0,
+                    "name": "грамм",
+                    "max_length": 50,
+                    "id": "2d23dc0b39924feba1d32c0da42b72ab"
+                  },
+                  "coef": 1000.0,
+                  "grams_per_unit": 1000.0,
+                  "name": "килограмм",
+                  "max_length": 50,
+                  "id": "5b55ac1e6dda470d9c8f41b97d736759"
+                },
+                "quantity": 0.0625,
+                "loss_ratio": 0.02,
+                "grams_per_unit": 1000.0,
+                "sub_recipe": null,
+                "gross_weight": 62.5,
+                "net_weight": 61.25,
+                "name": "Мука ржаная",
+                "max_length": 50,
+                "id": "76eb258a3bec43dfb3166f0ffc7a9a04"
+              }
+            ],
+            "gross_weight": 203.5,
+            "net_weight": 193.75,
+            "name": "Оладьи пышные на кефире (1 порция)",
+            "max_length": 50,
+            "id": "b9972a2db7d142f19aaee0ae6d37d141"
+          },
+          "gross_weight": 203.5,
+          "net_weight": 193.75,
+          "name": "Порция оладий пышных на кефире",
+          "max_length": 50,
+          "id": "eefa350b7da4473c8f416f9e6e0c97e3"
+        },
+        {
+          "nomenclature": {
+            "full_name": "Плёнка пищевая ПВХ 300 мм",
+            "group": {
+              "id": "7b2097b8f31f4eb59b591fc62c13a8c3",
+              "name": "Упаковка"
+            },
+            "range": {
+              "base": null,
+              "coef": 1.0,
+              "grams_per_unit": 1.0,
+              "name": "штука",
+              "max_length": 50,
+              "id": "8b7a54bd81494e84acd3f4d1828748a7"
+            },
+            "name": "Плёнка пищевая",
+            "max_length": 50,
+            "id": "5c89cb6ff7c143d8b7ea4675932eb675"
+          },
+          "range": {
+            "base": null,
+            "coef": 1.0,
+            "grams_per_unit": 1.0,
+            "name": "штука",
+            "max_length": 50,
+            "id": "8b7a54bd81494e84acd3f4d1828748a7"
+          },
+          "quantity": 1.0,
+          "loss_ratio": 0.0,
+          "grams_per_unit": 5.0,
+          "sub_recipe": null,
+          "gross_weight": 5.0,
+          "net_weight": 5.0,
+          "name": "Плёнка пищевая",
+          "max_length": 50,
+          "id": "a57389d57a9b478987bf9f3de85e6c0a"
+        }
+      ],
+      "gross_weight": 208.5,
+      "net_weight": 198.75,
+      "name": "Упаковка оладий пышных",
+      "max_length": 50,
+      "id": "c5abfee68d0c4e519b1f39cdbd30adcb"
+    }
+  ]
+}
