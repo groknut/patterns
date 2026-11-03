@@ -30,9 +30,7 @@ def test_convert_factory_for_nomenclature_model():
     """Составной объект: скалярные поля чистые, вложенные — развернуты"""
     g = group_model(name="Бакалея")
     r = range_model(name="килограмм", coef=1000)
-    nom = nomenclature_model(
-        full_name="Мука ржаная", name="Мука", group=g, range=r
-    )
+    nom = nomenclature_model(full_name="Мука ржаная", name="Мука", group=g, range=r)
 
     result = convert_factory().convert(nom)
 

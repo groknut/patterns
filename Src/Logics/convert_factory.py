@@ -12,11 +12,9 @@ from Src.Logics.reference_convertor import reference_convertor
 class convert_factory(abstract_convertor):
     """Фабрика конверторов — диспетчер по типам."""
 
-    __mapping: dict[type, abstract_convertor]= {}
+    __mapping: dict[type, abstract_convertor] = {}
 
     def __init__(self) -> None:
-
-        self.__mapping = {}
         self.__register(basic_convertor())
         self.__register(datetime_convertor())
         self.__register(list_convertor(self))
@@ -31,11 +29,9 @@ class convert_factory(abstract_convertor):
         for cls in type(object).__mro__:
             if cls in self.__mapping:
                 return self.__mapping[cls]
-        raise argument_exception(
-            f"Нет конвертора для типа {type(object).__name__}"
-        )
+        raise argument_exception(f"Нет конвертора для типа {type(object).__name__}")
 
-    def convert(self, object: Any, _seen: set = None):
+    def convert(self, object: Any, _seen: set | None = None):
         """Делегирует конвертору, чей `types` подходит под объект."""
         return self.get_convertor(object).convert(object, _seen)
 

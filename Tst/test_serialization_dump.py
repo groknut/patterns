@@ -14,15 +14,10 @@ def test_dump_storage_to_single_json():
 
     data = {
         "nomenclatures": [
-            factory.convert(x)
-            for x in storage_manager().nomenclatures.values()
+            factory.convert(x) for x in storage_manager().nomenclatures.values()
         ],
-        "ranges": [
-            factory.convert(x) for x in storage_manager().ranges.values()
-        ],
-        "recipes": [
-            factory.convert(x) for x in storage_manager().recipes.values()
-        ],
+        "ranges": [factory.convert(x) for x in storage_manager().ranges.values()],
+        "recipes": [factory.convert(x) for x in storage_manager().recipes.values()],
     }
 
     out_dir = Path("Docs/JsonExamples")

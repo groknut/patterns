@@ -13,5 +13,5 @@ class list_convertor(abstract_convertor):
     def types(self) -> tuple[type, ...]:
         return (list, tuple)
 
-    def convert(self, object: Any, _seen: set = None) -> list:
+    def convert(self, object: Any, _seen: set | None = None) -> list:
         return [self.__factory.convert(x, _seen) for x in object]

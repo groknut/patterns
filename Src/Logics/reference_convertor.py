@@ -3,6 +3,7 @@ from typing import Any
 from Src.Core.abstract_convertor import abstract_convertor
 from Src.Core.abstract_model import abstract_model
 
+
 class reference_convertor(abstract_convertor):
     """Глубокий конвертор доменной модели, списков и словарей."""
 
@@ -13,7 +14,7 @@ class reference_convertor(abstract_convertor):
     def __init__(self, factory: abstract_convertor) -> None:
         self.__factory = factory
 
-    def convert(self, object: Any, _seen: set = None) -> Any:
+    def convert(self, object: Any, _seen: set | None = None) -> Any:
         """Запускает конвертацию."""
         if _seen is None:
             _seen = set()
@@ -26,7 +27,6 @@ class reference_convertor(abstract_convertor):
         try:
             result = {}
             for name, value in self.__iter_properties(object):
-
                 if value is None:
                     result[name] = None
                     continue

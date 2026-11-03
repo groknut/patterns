@@ -13,5 +13,5 @@ class dict_convertor(abstract_convertor):
     def types(self) -> tuple[type, ...]:
         return (dict,)
 
-    def convert(self, object: Any, _seen: set = None) -> dict:
+    def convert(self, object: Any, _seen: set | None = None) -> dict:
         return {k: self.__factory.convert(v, _seen) for k, v in object.items()}
