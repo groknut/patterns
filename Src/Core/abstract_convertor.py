@@ -24,3 +24,8 @@ class abstract_convertor(ABC):
             if isinstance(obj, convertor.types):
                 return convertor
         return None
+
+    @abstractmethod
+    def deserialize(self, source: dict, target_type: type, _seen: set | None = None) -> Any:
+        """Словарь -> объект target_type"""
+        ...
