@@ -1,4 +1,5 @@
 from typing import Any
+import typing
 
 from Src.Core.abstract_convertor import abstract_convertor
 from Src.Core.abstract_model import abstract_model
@@ -59,3 +60,42 @@ class reference_convertor(abstract_convertor):
                 continue
             seen.add(name)
             yield name, value
+
+
+    def deserialize(
+        self, source: dict, target_type: type[abstract_model], _seen: set | None = None
+    ) -> abstract_model | None:
+
+        if not source:
+            return None
+
+        instance = object.__new__(target_type)
+        abstract_model.__init__(instance)
+
+        class_hints = typing.get_type_hints(target_type)
+
+        for key, value in source.items():
+            if key.startswith("_") or value is None:
+                continue
+
+            prop = getattr(type(instance), key, None)
+
+            if isinstance(prop, property) and prop.fset:
+                hints = typing.get_type_hints(prop.fset)
+                expected_type = hints.get("value")
+                if not expected_type:
+                    continue
+                converted = self.__factory.deserialize(value, expected_type, _seen)
+                setattr(instance, key, converted)
+            else:
+                if isinstance(prop, property) and not prop.fset:
+                    continue
+
+                expected_type = class_hints.get(key)
+                if expected_type is None:
+                    setattr(instance, key, value)
+                else:
+                    converted = self.__factory.deserialize(value, expected_type, _seen)
+                    setattr(instance, key, converted)
+
+        return instance
