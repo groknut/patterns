@@ -2,6 +2,7 @@ from typing import Any
 import typing
 
 from Src.Core.abstract_convertor import abstract_convertor
+from Src.Core.abstract_model import abstract_model
 from Src.Core.validator import argument_exception
 from Src.Logics.basic_convertor import basic_convertor
 from Src.Logics.datetime_convertor import datetime_convertor

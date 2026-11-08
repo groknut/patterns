@@ -1,10 +1,13 @@
+import json
+from pathlib import Path
+
 from Src.Logics.convert_factory import convert_factory
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Models.group_model import group_model
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
-
+from Src.Models.recipe_model import recipe_model
 
 def test_serialize_deserialize_range_with_recursion():
     """Сериализация/десериализация range_model с рекурсией (base → base)"""
@@ -50,17 +53,52 @@ def test_factory_serialize_and_deserialize_primitives():
     assert factory.deserialize({"value": 42}, int) == 42
     assert factory.deserialize([{"value": 1}, {"value": 2}], list[int]) == [1, 2]
 
-def test_deserialize_from_storage():
-    """Берём реальную модель из storage, сериализуем, десериализуем, сравниваем"""
+def test_dump_and_load_storage():
+    """Выгружает данные в JSON, загружает обратно, десериализует и сравнивает"""
+
     settings_manager().load()
     storage_manager().convert(True)
     factory = convert_factory()
 
-    original = next(iter(storage_manager().nomenclatures.values()))
-    data = factory.convert(original)
-    restored = factory.deserialize(data, nomenclature_model)
+    original_data = {
+        "nomenclatures": [
+            factory.convert(x) for x in storage_manager().nomenclatures.values()
+        ],
+        "ranges": [
+            factory.convert(x) for x in storage_manager().ranges.values()
+        ],
+        "recipes": [
+            factory.convert(x) for x in storage_manager().recipes.values()
+        ],
+    }
 
-    assert restored.id == original.id
-    assert restored.name == original.name
-    assert restored.group.id == original.group.id
-    assert restored.range.id == original.range.id
+    out_dir = Path("Docs/JsonExamples")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / "storage_dump.json"
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(original_data, f, ensure_ascii=False, indent=2)
+
+    with open(path, "r", encoding="utf-8") as f:
+        loaded_data = json.load(f)
+
+    # Сравниваем Номенклатуру
+    for orig_dict in loaded_data["nomenclatures"]:
+        restored_model = factory.deserialize(orig_dict, nomenclature_model)
+        restored_dict = factory.convert(restored_model)
+        assert restored_dict == orig_dict, f"Ошибка номенклатуры: {orig_dict.get('name')}"
+
+    # Сравниваем Единицы измерения (рекурсия base)
+    for orig_dict in loaded_data["ranges"]:
+        restored_model = factory.deserialize(orig_dict, range_model)
+        restored_dict = factory.convert(restored_model)
+        assert restored_dict == orig_dict, f"Ошибка единицы: {orig_dict.get('name')}"
+
+    # Сравниваем Рецепты (списки ингредиентов и шагов)
+    for orig_dict in loaded_data["recipes"]:
+        restored_model = factory.deserialize(orig_dict, recipe_model)
+        restored_dict = factory.convert(restored_model)
+        assert restored_dict == orig_dict, f"Ошибка рецепта: {orig_dict.get('name')}"
+
+        assert len(restored_model.ingredients) > 0
+        assert len(restored_model.steps) > 0

@@ -88,13 +88,23 @@ class ingredient_model(entity_model):
             return 1.0
         return self.__range.grams_per_unit
 
+    @grams_per_unit.setter
+    def grams_per_unit(self, value: float) -> None:
+        if value is not None:
+            validator.validate(value, (int, float))
+            if value <= 0:
+                raise argument_exception("grams_per_unit должен быть больше нуля")
+            self.__grams_per_unit = float(value)
+        else:
+            self.__grams_per_unit = None
+
     @property
     def sub_recipe(self):
         """Карта полуфабриката, если эта номенклатура — результат другой карты."""
         return self.__sub_recipe
 
     @sub_recipe.setter
-    def sub_recipe(self, value) -> None:
+    def sub_recipe(self, value: "recipe_model") -> None:
         self.__sub_recipe = value
 
     @property

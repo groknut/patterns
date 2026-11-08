@@ -40,6 +40,11 @@ class recipe_model(entity_model):
     def result(self) -> nomenclature_model:
         return self.__result
 
+    @result.setter
+    def result(self, value: nomenclature_model) -> None:
+        validator.validate(value, nomenclature_model)
+        self.__result = value
+
     @property
     def output_quantity(self) -> float:
         return self.__output_quantity
