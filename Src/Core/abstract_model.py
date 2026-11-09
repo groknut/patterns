@@ -31,3 +31,10 @@ class abstract_model(ABC):
         if not isinstance(value, abstract_model):
             return False
         return self.id == value.id
+
+    @classmethod
+    def empty(cls):
+        """Создать пустой экземпляр, минуя валидацию __init__."""
+        instance = object.__new__(cls)
+        abstract_model.__init__(instance)
+        return instance

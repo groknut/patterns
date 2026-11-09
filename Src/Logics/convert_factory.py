@@ -1,6 +1,8 @@
 from typing import Any
+import typing
 
 from Src.Core.abstract_convertor import abstract_convertor
+from Src.Core.abstract_model import abstract_model
 from Src.Core.validator import argument_exception
 from Src.Logics.basic_convertor import basic_convertor
 from Src.Logics.datetime_convertor import datetime_convertor
@@ -12,11 +14,10 @@ from Src.Logics.reference_convertor import reference_convertor
 class convert_factory(abstract_convertor):
     """Фабрика конверторов — диспетчер по типам."""
 
-    __mapping: dict[type, abstract_convertor]= {}
 
     def __init__(self) -> None:
-
-        self.__mapping = {}
+        self.__mapping: dict[type, abstract_convertor] = {}
+        self.__classes = self.__scan_classes()
         self.__register(basic_convertor())
         self.__register(datetime_convertor())
         self.__register(list_convertor(self))
@@ -27,18 +28,49 @@ class convert_factory(abstract_convertor):
         for type_ in convertor.types:
             self.__mapping[type_] = convertor
 
+    @staticmethod
+    def __scan_classes() -> dict[str, type]:
+        """Собирает все подклассы abstract_model по имени класса."""
+        result: dict[str, type] = {}
+        stack = [abstract_model]
+        while stack:
+            for sub in stack.pop().__subclasses__():
+                result[sub.__name__] = sub
+                stack.append(sub)
+        return result
+
+    def resolve_class(self, name: str) -> type:
+        cls = self.__classes.get(name)
+        if cls is None:
+            raise argument_exception(f"Неизвестный класс: {name}")
+        return cls
+
     def get_convertor(self, object) -> abstract_convertor:
-        for cls in type(object).__mro__:
+        origin = typing.get_origin(object) if not isinstance(object, type) else None
+        if origin is not None:
+            mro = origin.__mro__
+            name = str(object)
+        else:
+            mro = object.__mro__ if isinstance(object, type) else type(object).__mro__
+            name = object.__name__ if isinstance(object, type) else type(object).__name__
+        for cls in mro:
             if cls in self.__mapping:
                 return self.__mapping[cls]
-        raise argument_exception(
-            f"Нет конвертора для типа {type(object).__name__}"
-        )
+        raise argument_exception(f"Нет конвертора для типа {name}")
 
-    def convert(self, object: Any, _seen: set = None):
+    def convert(self, object: Any, _seen: set | None = None):
         """Делегирует конвертору, чей `types` подходит под объект."""
         return self.get_convertor(object).convert(object, _seen)
 
     @property
     def types(self) -> tuple[type, ...]:
         return ()
+
+    def deserialize(
+        self, source: Any, target_type: type, _seen: set | None = None
+    ) -> Any:
+        if isinstance(source, dict) and "__class__" in source:
+            return self.get_convertor(abstract_model).deserialize(source, None, _seen)
+        if target_type is None:
+            target_type = dict
+        return self.get_convertor(target_type).deserialize(source, target_type, _seen)
