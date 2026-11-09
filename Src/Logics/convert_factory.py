@@ -17,6 +17,7 @@ class convert_factory(abstract_convertor):
 
     def __init__(self) -> None:
         self.__mapping: dict[type, abstract_convertor] = {}
+        self.__classes = self.__scan_classes()
         self.__register(basic_convertor())
         self.__register(datetime_convertor())
         self.__register(list_convertor(self))
@@ -26,6 +27,23 @@ class convert_factory(abstract_convertor):
     def __register(self, convertor: abstract_convertor):
         for type_ in convertor.types:
             self.__mapping[type_] = convertor
+
+    @staticmethod
+    def __scan_classes() -> dict[str, type]:
+        """Собирает все подклассы abstract_model по имени класса."""
+        result: dict[str, type] = {}
+        stack = [abstract_model]
+        while stack:
+            for sub in stack.pop().__subclasses__():
+                result[sub.__name__] = sub
+                stack.append(sub)
+        return result
+
+    def resolve_class(self, name: str) -> type:
+        cls = self.__classes.get(name)
+        if cls is None:
+            raise argument_exception(f"Неизвестный класс: {name}")
+        return cls
 
     def get_convertor(self, object) -> abstract_convertor:
         origin = typing.get_origin(object) if not isinstance(object, type) else None
@@ -51,4 +69,8 @@ class convert_factory(abstract_convertor):
     def deserialize(
         self, source: Any, target_type: type, _seen: set | None = None
     ) -> Any:
+        if isinstance(source, dict) and "__class__" in source:
+            return self.get_convertor(abstract_model).deserialize(source, None, _seen)
+        if target_type is None:
+            target_type = dict
         return self.get_convertor(target_type).deserialize(source, target_type, _seen)

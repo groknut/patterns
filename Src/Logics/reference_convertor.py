@@ -112,9 +112,13 @@ class reference_convertor(abstract_convertor):
     def __decode(self, value: Any, _seen: set | None) -> Any:
         """Рекурсивно десериализует значение (dict/list/scalar)."""
         if isinstance(value, dict):
-            return self.deserialize(value, _seen=_seen) if "__class__" in value else {
-                k: self.__decode(v, _seen) for k, v in value.items()
-            }
+            if "__class__" in value:
+                return self.deserialize(value, _seen=_seen)
+            if len(value) == 1 and "value" in value:
+                return value["value"]
+            if len(value) == 1 and "iso" in value:
+                return value["iso"]
+            return {k: self.__decode(v, _seen) for k, v in value.items()}
         if isinstance(value, list):
             return [self.__decode(v, _seen) for v in value]
         return value
