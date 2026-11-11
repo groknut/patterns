@@ -8,6 +8,7 @@ from Src.Logics.report_sources import report_source_factory
 from Src.Logics.settings_manager import settings_manager
 from Src.Logics.storage_manager import storage_manager
 from Src.Logics.text_report import text_report
+import yaml
 
 app = FastAPI()
 
@@ -17,6 +18,18 @@ storage = storage_manager()
 storage.convert(setting_manager.settings.is_first)
 source_factory = report_source_factory()
 
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+
+    try:
+        with open("openapi.yaml", "r", encoding="utf-8") as f:
+            app.openapi_schema = yaml.safe_load(f)
+        return app.openapi_schema
+    except FileNotFoundError:
+        return FastAPI.openapi(app)
+
+app.openapi = custom_openapi
 
 def _resolve(entity_type: str, code: str, format: str | None = None):
     """Возвращает (fmt, entity, etype) или бросает 400/404."""
