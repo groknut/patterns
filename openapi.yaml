@@ -2,15 +2,7 @@ openapi: 3.0.0
 info:
   title: Main API
   version: "1.0"
-  description: |
-    API "ООО Ромашка" — отчёты по доменным сущностям и CRUD-операции.
-
-    Доменные сущности: `nomenclature` (номенклатура), `range` (единица измерения),
-    `recipe` (рецепт).
-
-    Форматы отчётов: `TXT`, `CSV`, `Markdown`, `XML`, `HTML`.
-    - TXT / XML / HTML → структурированный текст
-    - CSV / Markdown → скачивание файла (Content-Disposition: attachment)
+  description: API "ООО Ромашка" — отчёты и CRUD-операции
 
 servers:
   - url: http://localhost:8000
@@ -18,11 +10,8 @@ servers:
 
 tags:
   - name: Health
-    description: Проверка доступности
   - name: Reports
-    description: Формирование отчётов
   - name: Entities
-    description: CRUD по доменным сущностям
 
 paths:
   /:
@@ -35,92 +24,70 @@ paths:
           description: Приветствие
           content:
             application/json:
-              schema:
-                type: string
+              schema: { type: string }
               example: "Hello, world"
 
   /api/report/formats:
     get:
       tags: [Reports]
-      summary: Список всех форматов отчётов
+      summary: Список доступных форматов отчётов
       operationId: main.get_report_formats
       responses:
         '200':
-          description: Массив доступных форматов
+          description: Массив форматов
           content:
             application/json:
               schema:
                 type: array
-                items:
-                  type: string
+                items: { type: string }
               example: ["TXT", "CSV", "Markdown", "XML", "HTML"]
 
   /api/report/default/{entity_type}/{code}:
     get:
       tags: [Reports]
-      summary: Отчёт в формате из настроек (create_default)
-      description: |
-        Формат берётся из `settings_model.response_format`.
-        CSV / Markdown → скачивание файла, остальные → текст.
+      summary: Отчёт в формате из настроек
       operationId: main.get_report_default
       parameters:
-        - $ref: '#/components/parameters/EntityTypePath'
-        - $ref: '#/components/parameters/CodePath'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
       responses:
-        '200':
-          $ref: '#/components/responses/ReportSuccess'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        '200': { description: Отчёт }
+        '400': { description: Ошибка параметров }
+        '404': { description: Сущность не найдена }
 
   /api/report/{format}/{entity_type}/{code}:
     get:
       tags: [Reports]
-      summary: Отчёт в явно указанном формате
+      summary: Отчёт в указанном формате
       operationId: main.get_report_in_format
       parameters:
-        - $ref: '#/components/parameters/FormatPath'
-        - $ref: '#/components/parameters/EntityTypePath'
-        - $ref: '#/components/parameters/CodePath'
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
       responses:
-        '200':
-          $ref: '#/components/responses/ReportSuccess'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        '200': { description: Отчёт }
+        '400': { description: Ошибка параметров }
+        '404': { description: Сущность не найдена }
 
   /api/entities:
     get:
       tags: [Entities]
-      summary: Краткая сводка всех сущностей (id + name)
+      summary: Краткая сводка по всем сущностям
       operationId: main.list_all_entities
       responses:
         '200':
           description: Объект с тремя списками
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  nomenclature:
-                    type: array
-                    items: { $ref: '#/components/schemas/BriefEntity' }
-                  range:
-                    type: array
-                    items: { $ref: '#/components/schemas/BriefEntity' }
-                  recipe:
-                    type: array
-                    items: { $ref: '#/components/schemas/BriefEntity' }
+              schema: { type: object }
 
   /api/entities/{entity_type}:
     get:
       tags: [Entities]
-      summary: Список всех объектов типа (полные данные)
+      summary: Список объектов указанного типа
       operationId: main.list_entities_by_type
       parameters:
-        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/EntityType'
       responses:
         '200':
           description: Массив объектов
@@ -128,37 +95,22 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                items: { type: object }
+        '400': { description: Неверный тип }
     post:
       tags: [Entities]
       summary: Создать объект
       operationId: main.create_entity
       parameters:
-        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/EntityType'
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              description: |
-                JSON объекта с полем `__class__` (например, `range_model`).
-            example:
-              __class__: range_model
-              name: тестовая_единица
-              coef: 1.0
+            schema: { type: object }
       responses:
-        '201':
-          description: Объект создан
-          content:
-            application/json:
-              schema:
-                type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
+        '201': { description: Объект создан }
+        '400': { description: Ошибка валидации }
 
   /api/entities/{entity_type}/{code}:
     get:
@@ -166,137 +118,57 @@ paths:
       summary: Получить объект по коду
       operationId: main.read_entity
       parameters:
-        - $ref: '#/components/parameters/EntityTypePath'
-        - $ref: '#/components/parameters/CodePath'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
       responses:
-        '200':
-          description: Объект
-          content:
-            application/json:
-              schema:
-                type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        '200': { description: Объект }
+        '404': { description: Не найден }
     put:
       tags: [Entities]
-      summary: Обновить объект по коду
+      summary: Обновить объект
       operationId: main.update_entity
       parameters:
-        - $ref: '#/components/parameters/EntityTypePath'
-        - $ref: '#/components/parameters/CodePath'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              example:
-                __class__: range_model
-                name: обновлённая_единица
-                coef: 500.0
+            schema: { type: object }
       responses:
-        '200':
-          description: Объект обновлён
-          content:
-            application/json:
-              schema:
-                type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        '200': { description: Обновлено }
+        '404': { description: Не найден }
+        '409': { description: Нельзя изменить код, есть связи }
     delete:
       tags: [Entities]
-      summary: Удалить объект по коду
+      summary: Удалить объект
       operationId: main.delete_entity
       parameters:
-        - $ref: '#/components/parameters/EntityTypePath'
-        - $ref: '#/components/parameters/CodePath'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
       responses:
-        '204':
-          description: Удалено
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        '204': { description: Удалено }
+        '404': { description: Не найден }
+        '409': { description: Нельзя удалить, есть связи }
 
 components:
-
   parameters:
-    EntityTypePath:
+    EntityType:
       name: entity_type
       in: path
       required: true
-      description: Тип сущности
       schema:
         type: string
         enum: [nomenclature, range, recipe]
-    CodePath:
+    Code:
       name: code
       in: path
       required: true
-      description: Уникальный код (id) сущности
-      schema:
-        type: string
-    FormatPath:
+      schema: { type: string }
+    Format:
       name: format
       in: path
       required: true
-      description: Формат отчёта
       schema:
         type: string
         enum: [TXT, CSV, Markdown, XML, HTML]
-
-  schemas:
-    BriefEntity:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-    ErrorDetail:
-      type: object
-      properties:
-        detail:
-          type: string
-
-  responses:
-    ReportSuccess:
-      description: Отчёт сформирован
-      content:
-        text/plain:
-          schema:
-            type: string
-        text/html:
-          schema:
-            type: string
-        application/xml:
-          schema:
-            type: string
-        text/csv:
-          schema:
-            type: string
-            format: binary
-        text/markdown:
-          schema:
-            type: string
-            format: binary
-    BadRequest:
-      description: Неверный формат, тип сущности или JSON
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetail'
-          example:
-            detail: "Неизвестный формат отчета: PDF"
-    NotFound:
-      description: Сущность с таким кодом не найдена
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetail'
-          example:
-            detail: "Сущность recipe с кодом aafc9421 не найдена"
