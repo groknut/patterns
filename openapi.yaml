@@ -1,91 +1,33 @@
-# openapi: 3.0.0
-# info:
-#   title: Main API
-#   version: "1.0"
-#   description: API "ООО <Ромашка>"
-#
-# servers:
-#   - url: http://localhost:8080
-#     description: Local development server
-#
-# paths:
-#   /api/get_default_report:
-#     get:
-#       summary: Получить отчет по сущности
-#       description: Генерирует отчет для конкретного объекта по его уникальному коду.
-#       operationId: main.get_default_report
-#       parameters:
-#         - name: entity
-#           in: query
-#           required: true
-#           schema:
-#             type: string
-#           description: Ключ сущности (например, nomenclature_model, group_model).
-#         - name: unique_code
-#           in: query
-#           required: true
-#           schema:
-#             type: string
-#           description: Уникальный код конкретного объекта.
-#       responses:
-#         '200':
-#           description: Успешно сгенерированный отчет.
-#           content:
-#             text/plain:
-#               schema:
-#                 type: string
-#         '400':
-#           description: Ошибка в параметрах запроса.
-#           content:
-#             application/json:
-#               schema:
-#                 type: object
-#               example:
-#                 detail: "Ошибка: Отсутствует параметр entity"
-#         '500':
-#           description: Внутренняя ошибка сервера.
-#           content:
-#             text/plain:
-#               schema:
-#                 type: string
-#               example: "Ошибка: Невозможно получить требуемый отчет!"
-#
-#   /api/get_entities:
-#     get:
-#       summary: Получить список доменных сущностей
-#       description: Возвращает список всех доступных ключей (типов моделей), которые есть в хранилище.
-#       operationId: main.get_entities
-#       responses:
-#         '200':
-#           description: Список ключей сущностей в формате JSON.
-#           content:
-#             text/json:
-#               schema:
-#                 type: array
-#                 items:
-#                   type: string
-#               example: ["range_model", "group_model", "storage_model", "nomenclature_model", "receipt_model"]
-#         '500':
-#           description: Внутренняя ошибка сервера.
-#           content:
-#             application/json:
-#               schema:
-#                 type: object
-#               example:
-#                 detail: "Ошибка: Невозможно получить список доменных сущностей!"
 openapi: 3.0.0
 info:
   title: Main API
   version: "1.0"
-  description: API "ООО Ромашка" — отчёты по доменным сущностям
+  description: |
+    API "ООО Ромашка" — отчёты по доменным сущностям и CRUD-операции.
+
+    Доменные сущности: `nomenclature` (номенклатура), `range` (единица измерения),
+    `recipe` (рецепт).
+
+    Форматы отчётов: `TXT`, `CSV`, `Markdown`, `XML`, `HTML`.
+    - TXT / XML / HTML → структурированный текст
+    - CSV / Markdown → скачивание файла (Content-Disposition: attachment)
 
 servers:
   - url: http://localhost:8000
     description: Local development server
 
+tags:
+  - name: Health
+    description: Проверка доступности
+  - name: Reports
+    description: Формирование отчётов
+  - name: Entities
+    description: CRUD по доменным сущностям
+
 paths:
   /:
     post:
+      tags: [Health]
       summary: Health check
       operationId: main.main
       responses:
@@ -97,164 +39,66 @@ paths:
                 type: string
               example: "Hello, world"
 
-  /api/get_report:
+  /api/report/formats:
     get:
-      summary: TXT-отчёт по первому рецепту из хранилища
-      description: Возвращает текстовый отчёт для первого рецепта в storage_manager
-      operationId: main.get_report
+      tags: [Reports]
+      summary: Список всех форматов отчётов
+      operationId: main.get_report_formats
       responses:
         '200':
-          description: TXT-отчёт
+          description: Массив доступных форматов
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-              example: |
-                Код | Наименование | Брутто | Нетто
-                aafc... | Мука ржаная | 62.5 | 61.25
+                type: array
+                items:
+                  type: string
+              example: ["TXT", "CSV", "Markdown", "XML", "HTML"]
 
   /api/report/default/{entity_type}/{code}:
     get:
+      tags: [Reports]
       summary: Отчёт в формате из настроек (create_default)
       description: |
-        Формат берётся из settings_model.response_format.
-        - TXT / XML / HTML → структурированный текст
-        - CSV / Markdown → скачивание файла (Content-Disposition attachment)
+        Формат берётся из `settings_model.response_format`.
+        CSV / Markdown → скачивание файла, остальные → текст.
       operationId: main.get_report_default
       parameters:
-        - name: entity_type
-          in: path
-          required: true
-          description: Тип сущности
-          schema:
-            type: string
-            enum: [nomenclature, range, recipe]
-        - name: code
-          in: path
-          required: true
-          description: Уникальный код (id) сущности
-          schema:
-            type: string
+        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/CodePath'
       responses:
         '200':
-          description: Отчёт сформирован
-          content:
-            text/plain:
-              schema:
-                type: string
-            text/html:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-                format: binary
-            text/markdown:
-              schema:
-                type: string
-                format: binary
+          $ref: '#/components/responses/ReportSuccess'
         '400':
-          description: Неверный тип сущности
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail: { type: string }
-              example:
-                detail: "Неизвестный тип сущности: foo"
+          $ref: '#/components/responses/BadRequest'
         '404':
-          description: Сущность с таким кодом не найдена
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail: { type: string }
-              example:
-                detail: "Сущность recipe с кодом aafc9421 не найдена"
+          $ref: '#/components/responses/NotFound'
 
   /api/report/{format}/{entity_type}/{code}:
     get:
+      tags: [Reports]
       summary: Отчёт в явно указанном формате
-      description: |
-        - TXT / XML / HTML → структурированный текст (media_type соответствующий)
-        - CSV / Markdown → скачивание файла (Content-Disposition attachment)
       operationId: main.get_report_in_format
       parameters:
-        - name: format
-          in: path
-          required: true
-          description: Формат отчёта
-          schema:
-            type: string
-            enum: [TXT, CSV, Markdown, XML, HTML]
-        - name: entity_type
-          in: path
-          required: true
-          description: Тип сущности
-          schema:
-            type: string
-            enum: [nomenclature, range, recipe]
-        - name: code
-          in: path
-          required: true
-          description: Уникальный код (id) сущности
-          schema:
-            type: string
+        - $ref: '#/components/parameters/FormatPath'
+        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/CodePath'
       responses:
         '200':
-          description: Отчёт сформирован
-          content:
-            text/plain:
-              schema:
-                type: string
-            text/html:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-                format: binary
-            text/markdown:
-              schema:
-                type: string
-                format: binary
+          $ref: '#/components/responses/ReportSuccess'
         '400':
-          description: Неверный формат или тип сущности
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail: { type: string }
-              example:
-                detail: "Неизвестный формат отчета: PDF"
+          $ref: '#/components/responses/BadRequest'
         '404':
-          description: Сущность с таким кодом не найдена
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail: { type: string }
+          $ref: '#/components/responses/NotFound'
 
   /api/entities:
     get:
-      summary: Список кодов всех сущностей
-      description: |
-        Возвращает `id` и `name` всех сущностей из storage_manager
-        (номенклатура, единицы измерения, рецепты).
-      operationId: main.list_entities
+      tags: [Entities]
+      summary: Краткая сводка всех сущностей (id + name)
+      operationId: main.list_all_entities
       responses:
         '200':
-          description: Объект с тремя списками сущностей
+          description: Объект с тремя списками
           content:
             application/json:
               schema:
@@ -262,32 +106,197 @@ paths:
                 properties:
                   nomenclature:
                     type: array
-                    items:
-                      type: object
-                      properties:
-                        id:   { type: string }
-                        name: { type: string }
+                    items: { $ref: '#/components/schemas/BriefEntity' }
                   range:
                     type: array
-                    items:
-                      type: object
-                      properties:
-                        id:   { type: string }
-                        name: { type: string }
+                    items: { $ref: '#/components/schemas/BriefEntity' }
                   recipe:
                     type: array
-                    items:
-                      type: object
-                      properties:
-                        id:   { type: string }
-                        name: { type: string }
+                    items: { $ref: '#/components/schemas/BriefEntity' }
+
+  /api/entities/{entity_type}:
+    get:
+      tags: [Entities]
+      summary: Список всех объектов типа (полные данные)
+      operationId: main.list_entities_by_type
+      parameters:
+        - $ref: '#/components/parameters/EntityTypePath'
+      responses:
+        '200':
+          description: Массив объектов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    post:
+      tags: [Entities]
+      summary: Создать объект
+      operationId: main.create_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityTypePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: |
+                JSON объекта с полем `__class__` (например, `range_model`).
+            example:
+              __class__: range_model
+              name: тестовая_единица
+              coef: 1.0
+      responses:
+        '201':
+          description: Объект создан
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/entities/{entity_type}/{code}:
+    get:
+      tags: [Entities]
+      summary: Получить объект по коду
+      operationId: main.read_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/CodePath'
+      responses:
+        '200':
+          description: Объект
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Entities]
+      summary: Обновить объект по коду
+      operationId: main.update_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/CodePath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
               example:
-                nomenclature:
-                  - id: "aafc9421a20944e98342c02bafaaa8a0"
-                    name: "Кефир 1%"
-                range:
-                  - id: "8587666ec0d84b3181ee321fe10d0dc3"
-                    name: "килограмм"
-                recipe:
-                  - id: "3f9d1a2b4c6e8f0a9b1c2d3e4f5a6b7c"
-                    name: "Оладьи пышные на кефире (1 порция)"
+                __class__: range_model
+                name: обновлённая_единица
+                coef: 500.0
+      responses:
+        '200':
+          description: Объект обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Entities]
+      summary: Удалить объект по коду
+      operationId: main.delete_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityTypePath'
+        - $ref: '#/components/parameters/CodePath'
+      responses:
+        '204':
+          description: Удалено
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+
+  parameters:
+    EntityTypePath:
+      name: entity_type
+      in: path
+      required: true
+      description: Тип сущности
+      schema:
+        type: string
+        enum: [nomenclature, range, recipe]
+    CodePath:
+      name: code
+      in: path
+      required: true
+      description: Уникальный код (id) сущности
+      schema:
+        type: string
+    FormatPath:
+      name: format
+      in: path
+      required: true
+      description: Формат отчёта
+      schema:
+        type: string
+        enum: [TXT, CSV, Markdown, XML, HTML]
+
+  schemas:
+    BriefEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    ErrorDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+
+  responses:
+    ReportSuccess:
+      description: Отчёт сформирован
+      content:
+        text/plain:
+          schema:
+            type: string
+        text/html:
+          schema:
+            type: string
+        application/xml:
+          schema:
+            type: string
+        text/csv:
+          schema:
+            type: string
+            format: binary
+        text/markdown:
+          schema:
+            type: string
+            format: binary
+    BadRequest:
+      description: Неверный формат, тип сущности или JSON
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+            detail: "Неизвестный формат отчета: PDF"
+    NotFound:
+      description: Сущность с таким кодом не найдена
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+            detail: "Сущность recipe с кодом aafc9421 не найдена"
