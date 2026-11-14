@@ -3,6 +3,7 @@ import json
 from Src.Core.abstract_manager import abstract_manager
 from Src.Core.validator import validator
 from Src.Dtos.report_type_dto import report_type_enum
+from Src.Logics.convert_factory import convert_factory
 from Src.Models.company_model import company_model
 from Src.Models.settings_model import settings_model
 
@@ -53,35 +54,32 @@ class settings_manager(abstract_manager):
         return data[key]
 
     def convert(self) -> bool:
+        """Десериализует settings.json через общий convert_factory."""
         try:
-            self.__settings = settings_model()
-            org_data = self._require(self.__data, "organization")
-            if not isinstance(org_data, dict):
-                raise TypeError("Секция 'organization' должна быть объектом")
 
-            self.__settings.organization = company_model(
-                name=org_data.get("name", ""),
-                inn=self._to_int(org_data.get("inn", "")),
-                bic=self._to_int(org_data.get("bic", "")),
-                account=self._to_int(org_data.get("account", "")),
-                ownership=org_data.get("ownership", ""),
-            )
-
-            self.__settings.boss_name = self._require(self.__data, "boss_name")
-            self.__settings.account_name = self._require(self.__data, "account_name")
-            self.__settings.is_first = bool(self.__data.get("is_first", False))
-
-            self.__settings.response_format = report_type_enum.from_str(
-                self.__data.get("response_format", "TXT")
-            )
-
-            return True
-        except (KeyError, TypeError, ValueError, AttributeError) as e:
+            data = self._normalize(self.__data)
+            self.__settings = convert_factory().deserialize(data, settings_model)
+            return self.__settings is not None
+        except Exception as e:
             import traceback
-
             traceback.print_exc()
             print(f"[warn] Ошибка конвертации: {e}")
             return False
+
+    @staticmethod
+    def _normalize(data: dict) -> dict:
+        """Строковые числа в organization → int (settings.json хранит их строками)."""
+        import copy
+        result = copy.deepcopy(data)
+        org = result.get("organization")
+        if isinstance(org, dict):
+            for key in ("inn", "bic", "account", "corr_account"):
+                if key in org and isinstance(org[key], str):
+                    try:
+                        org[key] = int(org[key])
+                    except ValueError:
+                        org[key] = 0
+        return result
 
     @property
     def is_loaded(self) -> bool:

@@ -188,3 +188,56 @@ class storage_manager(abstract_manager):
     @property
     def is_initialized(self) -> bool:
         return self.__is_initialized
+
+
+
+    # ------------------------------------------------------------------
+    # Проверка связей (для CRUD)
+    # ------------------------------------------------------------------
+    def find_references(self, target_id: str) -> list[dict]:
+        """Возвращает список входящих ссылок на сущность с id=target_id.
+
+        Каждый элемент: {entity_type, entity_id, entity_name, field}.
+        entity_type — имя коллекции в storage (nomenclatures/ranges/recipes/...).
+        """
+        refs = []
+        for coll_name, coll in self.data.items():
+            for obj in coll.values():
+                for field_name, field_value in self.__iter_model_fields(obj):
+                    if self.__refs_id(field_value, target_id):
+                        refs.append({
+                            "entity_type": coll_name,
+                            "entity_id": obj.id,
+                            "entity_name": getattr(obj, "name", ""),
+                            "field": field_name,
+                        })
+        return refs
+
+    @staticmethod
+    def __refs_id(value, target_id: str) -> bool:
+        """Проверяет, ссылается ли значение (модель/список моделей) на target_id."""
+        from Src.Core.abstract_model import abstract_model
+        if isinstance(value, abstract_model):
+            return value.id == target_id
+        if isinstance(value, (list, tuple)):
+            return any(
+                isinstance(x, abstract_model) and x.id == target_id
+                for x in value
+            )
+        return False
+
+    def __iter_model_fields(self, obj):
+        """Обходит поля модели: @property по MRO + instance-атрибуты."""
+        seen = set()
+        for cls in type(obj).__mro__:
+            for name, attr in vars(cls).items():
+                if name in seen:
+                    continue
+                if isinstance(attr, property):
+                    seen.add(name)
+                    yield name, getattr(obj, name)
+        for name, value in vars(obj).items():
+            if name.startswith("_") or name in seen:
+                continue
+            seen.add(name)
+            yield name, value
