@@ -87,13 +87,25 @@ def update_entity(entity_type: str, code: str, payload: dict = Body(...)):
     factory = get_convert_factory()
     try:
         updated = factory.deserialize(payload, model_cls)
-        if updated.id != code:
-            updated.id = code
-        collection[code] = updated
-        return factory.convert(updated)
     except Exception as e:
         raise HTTPException(400, f"Ошибка обновления: {e}")
 
+    if updated.id != code:
+        refs = get_storage().find_references(code)
+        if refs:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "message": f"Нельзя изменить код: на сущность есть {len(refs)} ссылок",
+                    "references": refs,
+                },
+            )
+        collection.pop(code)
+        collection[updated.id] = updated
+    else:
+        collection[code] = updated
+
+    return factory.convert(updated)
 
 @router.delete("/{entity_type}/{code}", status_code=204, summary="Удалить объект")
 def delete_entity(entity_type: str, code: str):
@@ -105,6 +117,16 @@ def delete_entity(entity_type: str, code: str):
     collection, _ = get_collection_and_model(etype)
     if code not in collection:
         raise HTTPException(404, f"Объект {code} не найден")
+
+    refs = get_storage().find_references(code)
+    if refs:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": f"Нельзя удалить: на сущность есть {len(refs)} ссылок",
+                "references": refs,
+            },
+        )
 
     del collection[code]
     return Response(status_code=204)
