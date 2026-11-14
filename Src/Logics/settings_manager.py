@@ -53,37 +53,6 @@ class settings_manager(abstract_manager):
             raise KeyError(f"Обязательный ключ '{key}' отсутствует в файле настроек")
         return data[key]
 
-#     def convert(self) -> bool:
-#         try:
-#             self.__settings = settings_model()
-#             org_data = self._require(self.__data, "organization")
-#             if not isinstance(org_data, dict):
-#                 raise TypeError("Секция 'organization' должна быть объектом")
-#
-#             self.__settings.organization = company_model(
-#                 name=org_data.get("name", ""),
-#                 inn=self._to_int(org_data.get("inn", "")),
-#                 bic=self._to_int(org_data.get("bic", "")),
-#                 account=self._to_int(org_data.get("account", "")),
-#                 ownership=org_data.get("ownership", ""),
-#             )
-#
-#             self.__settings.boss_name = self._require(self.__data, "boss_name")
-#             self.__settings.account_name = self._require(self.__data, "account_name")
-#             self.__settings.is_first = bool(self.__data.get("is_first", False))
-#
-#             self.__settings.response_format = report_type_enum.from_str(
-#                 self.__data.get("response_format", "TXT")
-#             )
-#
-#             return True
-#         except (KeyError, TypeError, ValueError, AttributeError) as e:
-#             import traceback
-#
-#             traceback.print_exc()
-#             print(f"[warn] Ошибка конвертации: {e}")
-#             return False
-
     def convert(self) -> bool:
         """Десериализует settings.json через общий convert_factory."""
         try:
