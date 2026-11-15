@@ -2,8 +2,15 @@ import uvicorn
 import yaml
 from fastapi import FastAPI
 
+from Src.Logics.settings_manager import settings_manager
+from Src.Logics.storage_manager import storage_manager
+
+_sm = settings_manager()
+_sm.load()
+_storage = storage_manager()
+_storage.convert(_sm.settings.is_first)
+
 from Src.Routers import entity_router, report_router
-from Src.Routers.common import get_storage
 
 app = FastAPI()
 
@@ -20,9 +27,6 @@ def custom_openapi():
 
 
 app.openapi = custom_openapi
-
-get_storage()
-
 app.include_router(report_router)
 app.include_router(entity_router)
 
