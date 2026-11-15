@@ -57,29 +57,13 @@ class settings_manager(abstract_manager):
         """Десериализует settings.json через общий convert_factory."""
         try:
 
-            data = self._normalize(self.__data)
-            self.__settings = convert_factory().deserialize(data, settings_model)
+            self.__settings = convert_factory().deserialize(self.__data, settings_model)
             return self.__settings is not None
         except Exception as e:
             import traceback
             traceback.print_exc()
             print(f"[warn] Ошибка конвертации: {e}")
             return False
-
-    @staticmethod
-    def _normalize(data: dict) -> dict:
-        """Строковые числа в organization → int (settings.json хранит их строками)."""
-        import copy
-        result = copy.deepcopy(data)
-        org = result.get("organization")
-        if isinstance(org, dict):
-            for key in ("inn", "bic", "account", "corr_account"):
-                if key in org and isinstance(org[key], str):
-                    try:
-                        org[key] = int(org[key])
-                    except ValueError:
-                        org[key] = 0
-        return result
 
     @property
     def is_loaded(self) -> bool:
