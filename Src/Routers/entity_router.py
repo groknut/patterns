@@ -17,15 +17,19 @@ def _etype(entity_type: str) -> entity_type_enum:
     except ValueError as e:
         raise HTTPException(400, str(e))
 
-
 def _to_http(e: argument_exception) -> HTTPException:
+    """Преобразует argument_exception в HTTPException по прикреплённым атрибутам."""
     status = getattr(e, "http_status", 400)
     detail = str(e)
+
     refs = getattr(e, "references", None)
     if refs:
-        detail = {"message": str(e), "references": refs}
-    return HTTPException(status, detail)
+        detail = {
+            "message": str(e),
+            "references": [r.to_dict() for r in refs],
+        }
 
+    return HTTPException(status, detail)
 
 @router.get("", status_code=200)
 def list_all_entities():
