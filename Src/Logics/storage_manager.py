@@ -188,3 +188,17 @@ class storage_manager(abstract_manager):
     @property
     def is_initialized(self) -> bool:
         return self.__is_initialized
+
+    def iter_all_objects(self):
+        """Ленивый генератор: (имя_коллекции, объект) по всем коллекциям."""
+        for coll_name, coll in self.__data_collections():
+            for obj in coll.values():
+                yield coll_name, obj
+
+    def __data_collections(self):
+        """Внутренний генератор: (имя, коллекция) — только для iter_all_objects."""
+        yield "storages", self.__storages
+        yield "ranges", self.__ranges
+        yield "nomenclatures", self.__nomenclatures
+        yield "groups", self.__groups
+        yield "recipes", self.__recipes

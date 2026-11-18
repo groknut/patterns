@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  title: Main API
+  version: "1.0"
+  description: API "ООО Ромашка" — отчёты и CRUD-операции
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+tags:
+  - name: Health
+  - name: Reports
+  - name: Entities
+
+paths:
+  /:
+    post:
+      tags: [Health]
+      summary: Health check
+      operationId: main.main
+      responses:
+        '200':
+          description: Приветствие
+          content:
+            application/json:
+              schema: { type: string }
+              example: "Hello, world"
+
+  /api/report/formats:
+    get:
+      tags: [Reports]
+      summary: Список доступных форматов отчётов
+      operationId: main.get_report_formats
+      responses:
+        '200':
+          description: Массив форматов
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: string }
+              example: ["TXT", "CSV", "Markdown", "XML", "HTML"]
+
+  /api/report/default/{entity_type}/{code}:
+    get:
+      tags: [Reports]
+      summary: Отчёт в формате из настроек
+      operationId: main.get_report_default
+      parameters:
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
+      responses:
+        '200': { description: Отчёт }
+        '400': { description: Ошибка параметров }
+        '404': { description: Сущность не найдена }
+
+  /api/report/{format}/{entity_type}/{code}:
+    get:
+      tags: [Reports]
+      summary: Отчёт в указанном формате
+      operationId: main.get_report_in_format
+      parameters:
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
+      responses:
+        '200': { description: Отчёт }
+        '400': { description: Ошибка параметров }
+        '404': { description: Сущность не найдена }
+
+  /api/entities:
+    get:
+      tags: [Entities]
+      summary: Краткая сводка по всем сущностям
+      operationId: main.list_all_entities
+      responses:
+        '200':
+          description: Объект с тремя списками
+          content:
+            application/json:
+              schema: { type: object }
+
+  /api/entities/{entity_type}:
+    get:
+      tags: [Entities]
+      summary: Список объектов указанного типа
+      operationId: main.list_entities_by_type
+      parameters:
+        - $ref: '#/components/parameters/EntityType'
+      responses:
+        '200':
+          description: Массив объектов
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: object }
+        '400': { description: Неверный тип }
+    post:
+      tags: [Entities]
+      summary: Создать объект
+      operationId: main.create_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityType'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Объект создан }
+        '400': { description: Ошибка валидации }
+
+  /api/entities/{entity_type}/{code}:
+    get:
+      tags: [Entities]
+      summary: Получить объект по коду
+      operationId: main.read_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
+      responses:
+        '200': { description: Объект }
+        '404': { description: Не найден }
+    put:
+      tags: [Entities]
+      summary: Обновить объект
+      operationId: main.update_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Обновлено }
+        '404': { description: Не найден }
+        '409': { description: Нельзя изменить код, есть связи }
+    delete:
+      tags: [Entities]
+      summary: Удалить объект
+      operationId: main.delete_entity
+      parameters:
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/Code'
+      responses:
+        '204': { description: Удалено }
+        '404': { description: Не найден }
+        '409': { description: Нельзя удалить, есть связи }
+
+components:
+  parameters:
+    EntityType:
+      name: entity_type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [nomenclature, range, recipe]
+    Code:
+      name: code
+      in: path
+      required: true
+      schema: { type: string }
+    Format:
+      name: format
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [TXT, CSV, Markdown, XML, HTML]

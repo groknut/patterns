@@ -1,13 +1,13 @@
 {
-    "organization": {
-        "name": "ООО «Ромашка»",
-        "inn": "770123456711",
-        "bic": "044525225",
-        "account": "40702810100000012345",
-        "ownership": "ООО"
-    },
-    "boss_name": "Иванов Иван Иванович",
-    "account_name": "Петров Пётр Петрович",
-    "is_first": true,
-    "response_format": "TXT"
+  "organization": {
+    "name": "ООО Ромашка",
+    "inn": 7736050003,
+    "bic": 44525225,
+    "account": 40812810400000000225,
+    "ownership": "ООО"
+  },
+  "boss_name": "Воловиков Александр Сергеевич",
+  "account_name": "Балахчи Анна Георгиевна",
+  "is_first": true,
+  "response_format": "TXT"
 }

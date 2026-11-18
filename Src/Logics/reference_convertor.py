@@ -1,6 +1,5 @@
-from typing import Any
 import typing
-import inspect
+from typing import Any
 
 from Src.Core.abstract_convertor import abstract_convertor
 from Src.Core.abstract_model import abstract_model
@@ -105,11 +104,15 @@ class reference_convertor(abstract_convertor):
         for key, value in source.items():
             if key.startswith("_") or key == "__class__" or value is None or key in self.__SKIP_FIELDS:
                 continue
-            self.__assign(instance, key, self.__decode(value, _seen))
+            expected_type = None
+            prop = getattr(type(instance), key, None)
+            if isinstance(prop, property) and prop.fset:
+                expected_type = typing.get_type_hints(prop.fset).get("value")
+            self.__assign(instance, key, self.__decode(value, _seen, expected_type))
 
         return instance
 
-    def __decode(self, value: Any, _seen: set | None) -> Any:
+    def __decode(self, value: Any, _seen: set | None, expected_type: type | None = None) -> Any:
         """Рекурсивно десериализует значение (dict/list/scalar)."""
         if isinstance(value, dict):
             if "__class__" in value:
@@ -118,7 +121,14 @@ class reference_convertor(abstract_convertor):
                 return value["value"]
             if len(value) == 1 and "iso" in value:
                 return value["iso"]
+            if (
+                expected_type
+                and isinstance(expected_type, type)
+                and issubclass(expected_type, abstract_model)
+            ):
+                return self.deserialize(value, expected_type, _seen=_seen)
             return {k: self.__decode(v, _seen) for k, v in value.items()}
+
         if isinstance(value, list):
             return [self.__decode(v, _seen) for v in value]
         return value
