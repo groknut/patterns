@@ -1,9 +1,12 @@
 from collections import defaultdict
 from typing import Iterator
 
+from Src.Logics.prototypes import filter_prototype, balance_prototype
+
 from Src.Core.abstract_model import abstract_model
 from Src.Core.entity_reference import EntityReference
 from Src.Core.validator import argument_exception
+from Src.Dtos.filter_dto import filter_dto
 from Src.Dtos.report_type_dto import entity_type_enum
 from Src.Logics.convert_factory import convert_factory
 from Src.Logics.storage_manager import storage_manager
@@ -132,3 +135,17 @@ class EntityService:
         e.http_status = status
         e.references = references or []
         return e
+
+
+    # ---------------- Filter & Balance ----------------
+    def filter(self, etype: entity_type_enum, dto: filter_dto) -> list[dict]:
+        """Фильтрует объекты указанного типа согласно DTO."""
+        objects = list(self.__collection(etype).values())
+        filtered = filter_prototype().process(objects, dto)
+        return [self.__factory.convert(o) for o in filtered]
+
+    def balance(self, etype: entity_type_enum, dto: filter_dto) -> list[dict]:
+        """Формирует ОСВ по отфильтрованным объектам."""
+        objects = list(self.__collection(etype).values())
+        filtered = filter_prototype().process(objects, dto)
+        return balance_prototype().process(filtered)

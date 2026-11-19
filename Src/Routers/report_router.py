@@ -1,3 +1,6 @@
+from Src.Dtos.filter_dto import filter_dto
+from Src.Logics.convert_factory import convert_factory
+from Src.Services.entity_service import EntityService
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 
@@ -71,3 +74,17 @@ def get_report_in_format(format: str, entity_type: str, code: str):
     source = report_source_factory().create(etype, entity)
     report = report_factory().create(fmt)
     return _render(report, report.build(source), etype, code)
+
+
+@router.post("/{entity_type}/balance", status_code=200, summary="ОСВ с фильтрацией")
+def get_balance(entity_type: str, payload: filter_dto):
+    """Формирует ОСВ по отфильтрованным объектам."""
+    try:
+        etype = entity_type_enum.from_str(entity_type)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    try:
+        service = EntityService(storage_manager(), convert_factory())
+        return service.balance(etype, payload)
+    except argument_exception as e:
+        raise HTTPException(400, str(e))
