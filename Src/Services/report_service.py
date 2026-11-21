@@ -1,3 +1,4 @@
+from Src.Dtos.filter_dto import filter_dto
 from Src.Dtos.report_type_dto import entity_type_enum, report_type_enum
 from Src.Logics.report_factory import report_factory
 from Src.Logics.report_sources import report_source_factory
@@ -48,3 +49,12 @@ class ReportService:
             entity_type_enum.RANGE: "ranges",
             entity_type_enum.RECIPE: "recipes",
         }[etype]
+
+    def get_balance(self, etype: entity_type_enum, dto: filter_dto) -> list[dict]:
+        """Сформировать ОСВ по отфильтрованным объектам типа."""
+        from Src.Services.balance_service import balance_service
+
+        coll = self.__storage.data[self.__coll_name(etype)]
+        objects = list(coll.values())
+        rows = balance_service().build(objects, dto)
+        return [r.to_dict() for r in rows]

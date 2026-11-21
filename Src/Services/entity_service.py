@@ -141,11 +141,5 @@ class EntityService:
     def filter(self, etype: entity_type_enum, dto: filter_dto) -> list[dict]:
         """Фильтрует объекты указанного типа согласно DTO."""
         objects = list(self.__collection(etype).values())
-        filtered = filter_prototype().process(objects, dto)
+        filtered = filter_prototype(objects).filter(dto).data
         return [self.__factory.convert(o) for o in filtered]
-
-    def balance(self, etype: entity_type_enum, dto: filter_dto) -> list[dict]:
-        """Формирует ОСВ по отфильтрованным объектам."""
-        objects = list(self.__collection(etype).values())
-        filtered = filter_prototype().process(objects, dto)
-        return balance_prototype().process(filtered)

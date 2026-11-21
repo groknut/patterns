@@ -1,6 +1,5 @@
 from Src.Dtos.filter_dto import filter_dto
-from Src.Logics.convert_factory import convert_factory
-from Src.Services.entity_service import EntityService
+from Src.Services.report_service import ReportService
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 
@@ -83,8 +82,5 @@ def get_balance(entity_type: str, payload: filter_dto):
         etype = entity_type_enum.from_str(entity_type)
     except ValueError as e:
         raise HTTPException(400, str(e))
-    try:
-        service = EntityService(storage_manager(), convert_factory())
-        return service.balance(etype, payload)
-    except argument_exception as e:
-        raise HTTPException(400, str(e))
+    service = ReportService(storage_manager(), report_source_factory())
+    return service.get_balance(etype, payload)
