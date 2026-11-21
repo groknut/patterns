@@ -1,16 +1,30 @@
 from typing import Any
 
 from Src.Core.abstract_prototype import abstract_prototype
-from Src.Dtos.filter_dto import filter_condition_enum, filter_dto
+from Src.Dtos.filter_dto import filter_dto
+from Src.Dtos.filter_condition_enum import filter_condition_enum
 
 
 class filter_prototype(abstract_prototype):
-    """Фильтрация объектов по DTO."""
+    """Фильтрация доменных объектов.
+    Хранит исходный список и «текущий» отфильтрованный. clone() — копия.
+    """
 
-    def process(self, source: list, dto: filter_dto | None = None) -> list:
-        if dto is None:
-            return list(source)
-        return [obj for obj in source if self.__match(obj, dto)]
+    def __init__(self, source: list) -> None:
+        self.__source: list = list(source)
+
+    @property
+    def data(self) -> list:
+        return list(self.__source)
+
+    def clone(self) -> "filter_prototype":
+        """Копия прототипа с тем же набором данных."""
+        return filter_prototype(self.__source)
+
+    def filter(self, dto: filter_dto) -> "filter_prototype":
+        """Вернуть НОВЫЙ прототип с отфильтрованными данными."""
+        filtered = [obj for obj in self.__source if self.__match(obj, dto)]
+        return filter_prototype(filtered)
 
     def __match(self, obj: Any, dto: filter_dto) -> bool:
         value = self.__deep_value(obj, dto.field)
