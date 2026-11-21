@@ -1,24 +1,10 @@
 
 
 from dataclasses import dataclass
-from enum import Enum
-from multiprocessing import Condition
 
+from Src.Core.validator import validator
+from Src.Dtos.filter_condition_enum import filter_condition_enum
 
-class filter_condition_enum(Enum):
-    """Условие фильтрации"""
-    EQUALS = "EQUALS"
-    LIKE = "LIKE"
-
-    @classmethod
-    def from_str(cls, value) -> "filter_condition_enum":
-        if isinstance(value, cls):
-            return value
-        normalized = str(value).strip().upper()
-        for member in cls:
-            if member.value.upper() == normalized:
-                return member
-        raise ValueError(f"Неизвестное условие фильтрации: {value}")
 
 @dataclass
 class filter_dto:
@@ -31,3 +17,43 @@ class filter_dto:
     field: str
     value: str
     condition: filter_condition_enum
+
+    def __init__(
+        self,
+        field: str = "",
+        value: str = "",
+        condition: filter_condition_enum = filter_condition_enum.EQUALS,
+    ) -> None:
+        self.field = field
+        self.value = value
+        self.condition = condition
+
+
+    @property
+    def field(self) -> str:
+        return self.__field
+
+    @field.setter
+    def field(self, value: str) -> None:
+        validator.validate(value, str, 255)
+        self.__field = value.strip()
+
+    @property
+    def value(self) -> str:
+        return self.__value
+
+    @value.setter
+    def value(self, value: str) -> None:
+        validator.validate(value, str, 255)
+        self.__value = value
+
+    @property
+    def condition(self) -> filter_condition_enum:
+        return self.__condition
+
+    @condition.setter
+    def condition(self, value) -> None:
+        if isinstance(value, str):
+            value = filter_condition_enum.from_str(value)
+        validator.validate(value, filter_condition_enum)
+        self.__condition = value
