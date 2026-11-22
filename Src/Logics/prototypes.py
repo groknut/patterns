@@ -30,12 +30,35 @@ class filter_prototype(abstract_prototype):
         value = self.__deep_value(obj, dto.field)
         if value is None:
             return False
+
+        if dto.condition == filter_condition_enum.LESS_OR_EQUAL:
+            return self.__compare(value, dto.value, "<=")
+        if dto.condition == filter_condition_enum.GREATER_OR_EQUAL:
+            return self.__compare(value, dto.value, ">=")
+
         s = str(value)
         if dto.condition == filter_condition_enum.EQUALS:
             return s == dto.value
         if dto.condition == filter_condition_enum.LIKE:
             return dto.value.lower() in s.lower()
         return False
+
+    @staticmethod
+    def __compare(value, raw: str, op: str) -> bool:
+        """Сравнение с приведением типа: date/datetime/число."""
+        from datetime import date, datetime
+        try:
+            if isinstance(value, datetime):
+                v = datetime.fromisoformat(raw)
+            elif isinstance(value, date):
+                v = date.fromisoformat(raw)
+            elif isinstance(value, (int, float)):
+                v = type(value)(raw)
+            else:
+                return False
+        except (ValueError, TypeError):
+            return False
+        return value <= v if op == "<=" else value >= v
 
     def __deep_value(self, obj: Any, path: str) -> Any:
         for part in path.split("."):

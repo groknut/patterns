@@ -5,6 +5,8 @@ class filter_condition_enum(Enum):
     """Условие фильтрации"""
     EQUALS = "EQUALS"
     LIKE = "LIKE"
+    LESS_OR_EQUAL = "LESS_OR_EQUAL"
+    GREATER_OR_EQUAL = "GREATER_OR_EQUAL"
 
     @classmethod
     def from_str(cls, value) -> "filter_condition_enum":

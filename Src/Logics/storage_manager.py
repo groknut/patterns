@@ -17,6 +17,7 @@ class storage_manager(abstract_manager):
     __nomenclatures: dict = None
     __groups: dict = None
     __recipes: dict = None
+    __movements: dict = None
     __is_initialized: bool = False
 
     def __new__(cls):
@@ -27,6 +28,7 @@ class storage_manager(abstract_manager):
             obj.__nomenclatures = {}
             obj.__groups = {}
             obj.__recipes = {}
+            obj.__movements = {}
             obj.__is_initialized = False
             cls.instance = obj
         return cls.instance
@@ -48,6 +50,7 @@ class storage_manager(abstract_manager):
         self.__create_nomenclatures()
         self.__create_storages()
         self.__create_recipes()
+        self.__create_movements()
         self.__is_initialized = True
 
     def __create_ranges(self) -> None:
@@ -183,6 +186,7 @@ class storage_manager(abstract_manager):
             "nomenclatures": self.__nomenclatures,
             "groups": self.__groups,
             "recipes": self.__recipes,
+            "movements": self.__movements
         }
 
     @property
@@ -202,3 +206,17 @@ class storage_manager(abstract_manager):
         yield "nomenclatures", self.__nomenclatures
         yield "groups", self.__groups
         yield "recipes", self.__recipes
+        yield "movements", self.__movements
+
+    def __create_movements(self) -> None:
+        """Демо-движения для ОСВ."""
+        from Src.Models.movement_model import movement_model
+        movements = movement_model.create_sample_movements(
+            list(self.__nomenclatures.values())
+        )
+        for m in movements:
+            self.__movements[m.id] = m
+
+    @property
+    def movements(self) -> dict:
+        return self.__movements
