@@ -1,3 +1,7 @@
+from datetime import date
+
+from Src.Dtos.filter_dto import filter_dto
+from Src.Services.report_service import ReportService
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 
@@ -71,3 +75,21 @@ def get_report_in_format(format: str, entity_type: str, code: str):
     source = report_source_factory().create(etype, entity)
     report = report_factory().create(fmt)
     return _render(report, report.build(source), etype, code)
+
+
+@router.post("/{entity_type}/balance", status_code=200, summary="ОСВ")
+def get_balance(
+    entity_type: str,
+    payload: filter_dto,
+start_date: date,
+    end_date: date
+):
+    try:
+        etype = entity_type_enum.from_str(entity_type)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    try:
+        service = ReportService(storage_manager(), report_source_factory())
+        return service.get_balance(etype, payload, start_date, end_date)
+    except argument_exception as e:
+        raise HTTPException(400, str(e))

@@ -1,3 +1,4 @@
+from Src.Dtos.filter_dto import filter_dto
 from fastapi import APIRouter, Body, HTTPException
 from fastapi.responses import Response
 
@@ -72,3 +73,11 @@ def delete_entity(entity_type: str, code: str):
     except argument_exception as e:
         raise _to_http(e)
     return Response(status_code=204)
+
+@router.post("/{entity_type}/filter", status_code=200, summary="Фильтрация сущностей")
+def filter_entities(entity_type: str, payload: filter_dto):
+    """Фильтрует сущности по DTO."""
+    try:
+        return _service.filter(_etype(entity_type), payload)
+    except argument_exception as e:
+        raise _to_http(e)

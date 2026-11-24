@@ -1,3 +1,6 @@
+from datetime import date
+
+from Src.Dtos.filter_dto import filter_dto
 from Src.Dtos.report_type_dto import entity_type_enum, report_type_enum
 from Src.Logics.report_factory import report_factory
 from Src.Logics.report_sources import report_source_factory
@@ -5,6 +8,7 @@ from Src.Logics.storage_manager import storage_manager
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
 from Src.Models.recipe_model import recipe_model
+from Src.Services.balance_service import balance_service
 
 
 class ReportService:
@@ -48,3 +52,14 @@ class ReportService:
             entity_type_enum.RANGE: "ranges",
             entity_type_enum.RECIPE: "recipes",
         }[etype]
+
+    def get_balance(
+        self,
+        dto: filter_dto,
+        start_date: date,
+        end_date: date,
+    ) -> list[dict]:
+        """Сформировать ОСВ по отфильтрованным объектам типа."""
+        movements = list(self.__storage.movements.values())
+        rows = balance_service().build(movements, dto, start_date, end_date)
+        return [r.to_dict() for r in rows]
