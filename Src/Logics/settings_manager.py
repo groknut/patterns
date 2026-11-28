@@ -1,9 +1,11 @@
 import json
 
 from Src.Core.abstract_manager import abstract_manager
+from Src.Core.event_type import event_type
 from Src.Core.validator import validator
 from Src.Dtos.report_type_dto import report_type_enum
 from Src.Logics.convert_factory import convert_factory
+from Src.Logics.observer import observer
 from Src.Models.company_model import company_model
 from Src.Models.settings_model import settings_model
 
@@ -23,8 +25,15 @@ class settings_manager(abstract_manager):
                 self.__data = json.load(f)
                 self.__is_loaded = self.convert()
 
+
+
                 if not self.__is_loaded:
                     self.__settings = self.__create_default_data()
+
+                observer.create(
+                    event_type.load_settings(),
+                    {"file": inner_file_name, "is_loaded": True},
+                )
         except FileNotFoundError:
             print("[error] File not found")
         except:
