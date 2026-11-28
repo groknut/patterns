@@ -1,6 +1,8 @@
 from collections import defaultdict
 from typing import Iterator
 
+from Src.Core.event_type import event_type
+from Src.Logics.observer import observer
 from Src.Logics.prototypes import filter_prototype, balance_prototype
 
 from Src.Core.abstract_model import abstract_model
@@ -53,6 +55,10 @@ class EntityService:
             raise self.__err(409, f"Объект {obj.id} уже существует")
         coll[obj.id] = obj
         self.__refs = None
+        observer.create(
+            event_type.crud_operation(),
+            {"action": "create", "type": etype.value, "id": obj.id, "name": obj.name},
+        )
         return self.__factory.convert(obj)
 
     def update(self, etype: entity_type_enum, code: str, payload: dict) -> dict:
@@ -66,6 +72,10 @@ class EntityService:
             coll.pop(code)
         coll[obj.id] = obj
         self.__refs = None
+        observer.create(
+            event_type.crud_operation(),
+            {"action": "update", "type": etype.value, "id": obj.id, "name": obj.name},
+        )
         return self.__factory.convert(obj)
 
     def delete(self, etype: entity_type_enum, code: str) -> None:
@@ -74,6 +84,10 @@ class EntityService:
             raise self.__err(404, f"Объект {code} не найден")
         self.__guard(code, "Нельзя удалить")
         del coll[code]
+        observer.create(
+            event_type.crud_operation(),
+            {"action": "delete", "type": etype.value, "id": code},
+        )
         self.__refs = None
 
     def find_references(self, target_id: str) -> list[EntityReference]:
@@ -142,4 +156,8 @@ class EntityService:
         """Фильтрует объекты указанного типа согласно DTO."""
         objects = list(self.__collection(etype).values())
         filtered = filter_prototype(objects).filter(dto).data
+        observer.create(
+            event_type.crud_operation(),
+            {"action": "filter", "type": etype.value, "filters": len(dto.filters) if dto else 0},
+        )
         return [self.__factory.convert(o) for o in filtered]
